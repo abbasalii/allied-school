@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Add New Student - Allied School</title>
+	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="add_student.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="add_student.js"></script>
+</head>
+<body>
+	<form id="form" action="add_student" method="post">
+		<input type="text" name="name" placeholder="Full Name" value="Uzair Ghauri"/>
+		<input type="text" name="reg_no" placeholder="Registration #" value="222"/>
+		<input type="date" name="dob"/>
+		<input type="text" name="class" placeholder="Class" value="SE-3"/>
+		<input type="text" name="section" placeholder="Section" value="A" />
+		<textarea name="address" placeholder="Address">NUST H-12, Islamabad</textarea>
+		<input type="text" name="phone" placeholder="Phone #" value="03324554565" />
+		<input type="text" name="fname" placeholder="Father's Name" value="Muzammil Ghauri" />
+		<input type="text" name="cnic" placeholder="CNIC" value="36302-1828681-3" />
+		<input type="submit" value="Add"/>
+	</form>
+
+	<div id="messagebox"></div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Search Student - Allied School</title>
+	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="search_student.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="search_student.js"></script>
+</head>
+<body>
+	<div>
+		<form id="form" action="/search_student" method="post">
+			Search By:
+			<input type="text" name="reg_no" placeholder="Registraion #">
+			<input type="text" name="name" placeholder="Name"/>
+			<input type="text" name="class" placeholder="Class"/>
+			<input type="text" name="section" placeholder="Section"/>
+			<input type="submit" value="Search"/>
+		</form>
+	</div>
+
+	<div id="search-result-div">
+		<table id="search-result-tab"></table>
+	</div>
+
+	<div id="student-div">
+		<input id="student-name" type="text" readonly/>
+		<input id="student-reg" type="text" readonly/>
+		<input id="student-class" type="text" readonly/>
+		<input id="student-section" type="text" readonly/>
+		<input id="parent-name" type="text" readonly/>
+		<input id="parent-cnic" type="text" readonly/>
+		<input id="student-phone" type="text" readonly/>
+		<textarea id="student-address" readonly></textarea>
+
+		<input id="get-result-btn" type="button" value="View Result" />
+		<input id="get-fee-btn" type="button" value="View Fee History" />
+	</div>
+
+	<div id="student-result-div"></div>
+
+	<div id="student-fee-div">
+		<table id="student-fee-tab"></table>
+	</div>
+
+	<div id="student-challan-div">
+		<div>Fee For: <div id="fee-for"></div></div>
+		<div>Admission Fee: <div id="admission"></div></div>
+		<div>Tuition Fee: <div id="tution"></div></div>
+		<div>Security: <div id="security"></div></div>
+		<div>Annual Fee: <div id="annual"></div></div>
+		<div>Process Fee: <div id="process"></div></div>
+		<div>Fine: <div id="fine"></div></div>
+		<div>Amount Due: <div id="amount-due"></div></div>
+		<div>Issue Date: <div id="issue-date"></div></div>
+		<div>Due Date: <div id="due-date"></div></div>
+		<div>Pay Date: <div id="pay-date"></div></div>
+		<div>Amount Paid: <div id="amount-paid"></div></div>
+	</div>
+</body>
+</html>
