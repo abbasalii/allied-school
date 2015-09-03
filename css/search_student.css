@@ -13,3 +13,11 @@
 #student-challan-div{
 	display: none;
 }
+
+#payment-div{
+	display: none;
+}
+
+#invoice-id{
+	/*display: none;*/
+}

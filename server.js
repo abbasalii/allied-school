@@ -365,6 +365,44 @@ app.get('/student_fee_history',function(req, res){
 	});
 });
 
+app.post('/pay_invoice',function(req,res){
+
+	var id = req.body.id;
+	var amount = req.body.amount;
+	var date = req.body.date;
+
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'UPDATE CHALLAN SET PAY_DATE=?, AMOUNT_PAID=?, STATUS=2 WHERE ID=?';
+
+		connection.query(query, [date,amount,id],
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to update challan status");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200});
+				}
+			}
+
+		);
+
+		connection.on('error', function(err) {
+			console.log("Error occurred while performing database operation");
+			res.json({"code":500});
+        });
+	});
+});
+
 app.get('/generate_invoice',function(req, res){
 
 	if(req.session.login){
@@ -393,6 +431,57 @@ app.get('/send_sms',function(req, res){
 	else{
 		res.redirect('/login');
 	}
+});
+
+app.get('/view_report',function(req, res){
+
+	if(req.session.login){
+		res.sendFile(__dirname +'/html/view_report.html');
+	}
+	else{
+		res.redirect('/login');
+	}
+});
+
+app.get('/get_report',function(req, res){
+
+	var clas = req.query.class;
+	var section = req.query.section;
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'SELECT STUDENT.ID "STD_ID", STUDENT.NAME, SUBJECT.ID "SUB_ID",'
+				  + ' SUBJECT.NAME "SUBJECT", ASSESSMENT.TYPE "TYPE", ASSESSMENT.TOTAL_MARKS "TM",'
+				  + ' MARKS.OBTAINED "OM" FROM SUBJECT, ASSESSMENT, MARKS, STUDENT WHERE STUDENT.CLASS=?'
+				  + ' AND STUDENT.SECTION=? AND STUDENT.ID=MARKS.STD_ID AND MARKS.ASS_ID=ASSESSMENT.ID'
+				  + ' AND ASSESSMENT.SUB_ID=SUBJECT.ID;';
+
+		connection.query(query, [clas,section],
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to fetch class reports");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200, "data":rows});
+				}
+			}
+
+		);
+
+		connection.on('error', function(err) {
+			console.log("Error occurred while performing database operation");
+			res.json({"code":500});
+        });
+	});
+
 });
 
 app.listen(PORT);

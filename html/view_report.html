@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Reports Section - Allied School</title>
+	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="view_report.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="view_report.js"></script>
+</head>
+<body>
+	<div>
+		<form id="form" action="/get_report">
+			<input type="text" name="class" value="SE-3" placeholder="Class"/>
+			<input type="text" name="section" value="A" placeholder="Section"/>
+			<input type="submit" value="View"/>
+		</form>
+	</div>
+	<div id="report-div">
+		<table id="report-tab"></table>
+	</div>
+</body>
+</html>

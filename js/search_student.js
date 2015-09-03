@@ -289,8 +289,17 @@ Google = new function(){
 		$("#issue-date").html(formatD(fee.ISSUE_DATE));
 		$("#due-date").html(formatD(fee.DUE_DATE));
 		$("#pay-date").html(formatD(fee.PAY_DATE));
-		console.log(fee.PAY_DATE);
 		$("#amount-paid").html(fee.AMOUNT_PAID);
+
+		var status="PAID";
+		if(fee.STATUS==0){
+			status = "UNPAID";
+
+			$("#invoice-id").val(fee.ID);
+			$("#enter-date").val(getToday());
+			$("#payment-div").show();
+		}
+		$("#status").html(status);
 
 		$("#student-challan-div").show();
 	}
@@ -301,6 +310,24 @@ Google = new function(){
 			return 0;
 		var diff =  Math.floor(( Date.parse(new Date()) - Date.parse(data.DUE_DATE) ) / 86400000);
 		return diff*10;
+	}
+
+	var getToday = function(){
+		var date = new Date();
+
+		var day = date.getDate();
+		var month = date.getMonth() + 1;
+		var year = date.getFullYear();
+
+		if (month < 10) month = "0" + month;
+		if (day < 10) day = "0" + day;
+
+		var today = year + "-" + month + "-" + day;
+		return today;
+	}
+
+	this.paymentSuccess = function(){
+		alert("done");
 	}
 }
 
@@ -315,6 +342,24 @@ $(function(){
 				if(response.code==200){
 					// console.log(response.data);
 					Google.displayResult(response.data);
+				}
+				else{
+					alert("404");
+				}
+			}
+		});
+		return false;
+	});
+
+	$('#payment-form').submit(function(){
+		$.ajax({
+			url: $('#payment-form').attr('action'),
+			type: "post",
+			data : $('#payment-form').serialize(),
+			success: function(response){
+				if(response.code==200){
+					// console.log(response.data);
+					Google.paymentSuccess();
 				}
 				else{
 					alert("404");

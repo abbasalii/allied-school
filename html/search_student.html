@@ -45,18 +45,27 @@
 	</div>
 
 	<div id="student-challan-div">
-		<div>Fee For: <div id="fee-for"></div></div>
-		<div>Admission Fee: <div id="admission"></div></div>
-		<div>Tuition Fee: <div id="tution"></div></div>
-		<div>Security: <div id="security"></div></div>
-		<div>Annual Fee: <div id="annual"></div></div>
-		<div>Process Fee: <div id="process"></div></div>
-		<div>Fine: <div id="fine"></div></div>
-		<div>Amount Due: <div id="amount-due"></div></div>
-		<div>Issue Date: <div id="issue-date"></div></div>
-		<div>Due Date: <div id="due-date"></div></div>
-		<div>Pay Date: <div id="pay-date"></div></div>
-		<div>Amount Paid: <div id="amount-paid"></div></div>
+		<div>Fee For: <span id="fee-for"></span></div>
+		<div>Admission Fee: <span id="admission"></span></div>
+		<div>Tuition Fee: <span id="tution"></span></div>
+		<div>Security: <span id="security"></span></div>
+		<div>Annual Fee: <span id="annual"></span></div>
+		<div>Process Fee: <span id="process"></span></div>
+		<div>Fine: <span id="fine"></span></div>
+		<div>Amount Due: <span id="amount-due"></span></div>
+		<div>Issue Date: <span id="issue-date"></span></div>
+		<div>Due Date: <span id="due-date"></span></div>
+		<div>Pay Date: <span id="pay-date"></span></div>
+		<div>Amount Paid: <span id="amount-paid"></span></div>
+		<div>Status: <span id="status"></span></div>
+		<div id="payment-div">
+			<form id="payment-form" action="/pay_invoice" method="post">
+				<input type="number" id="invoice-id" name="id"/>
+				<input type="number" id="enter-amount" name="amount"/>
+				<input type="date" id="enter-date" name="date"/>
+				<input type="submit" id="pay-btn" value="Pay Fee"/>
+			</form>
+		</div>
 	</div>
 </body>
 </html>
