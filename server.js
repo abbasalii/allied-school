@@ -484,4 +484,188 @@ app.get('/get_report',function(req, res){
 
 });
 
+app.get('/enter_marks',function(req, res){
+
+	if(req.session.login){
+		res.sendFile(__dirname +'/html/enter_marks.html');
+	}
+	else{
+		res.redirect('/login');
+	}
+});
+
+app.post('/add_assessment',function(req,res){
+
+	var clas = req.body.class;
+	var section = req.body.section;
+	var subject = req.body.subject;
+	var type = req.body.type;
+	var total = req.body.total;
+	var date = req.body.date;
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'SELECT * FROM STUDENT WHERE CLASS=? AND SECTION=?';
+
+		var students = null;
+		connection.query(query, [clas,section],
+			function(err,rows,fields) {
+
+				if(err){
+					console.log("Failed to fetch students data");
+					res.json({"code":500});
+					connection.release();
+				}
+				else{
+					students = rows;
+					query = 'SELECT ID FROM SUBJECT WHERE NAME=?';
+					connection.query(query, [subject],
+						function(err,rows,fields) {
+							if(err){
+								console.log("Failed to fetch subject id");
+								res.json({"code":500});
+								connection.release();
+							}
+							else if(rows.length==0){
+								query = 'INSERT INTO SUBJECT (NAME) VALUES(?)';
+								connection.query(query, [subject],
+									function(err,rows,fields) {
+										if(err){
+											console.log("Failed to create new subject");
+											res.json({"code":500});
+											connection.release();
+										}
+										else{
+											query = 'INSERT INTO ASSESSMENT (TYPE, A_DATE, SUB_ID, TOTAL_MARKS) VALUES(?,?,?,?)';
+											connection.query(query, [type,date,rows.insertId,total],
+												function(err,rows,fields) {
+													if(err){
+														console.log("Failed to create new assessment");
+														res.json({"code":500});
+														connection.release();
+													}
+													else{
+														query = 'INSERT INTO MARKS (STD_ID, ASS_ID) VALUES (?,?)';
+														var values = [students[0].ID,rows,insertId];
+														for(var i=1; i<students.length; i++){
+															query += ',(?,?)';
+															values.push(students[i].ID);
+															values.push(rows.insertId);
+														}
+														connection.query(query, [type,date,rows.insertId,total],
+															function(err,rows,fields) {
+																connection.release();
+																if(err){
+																	console.log("Failed to create new marklist");
+																	res.json({"code":500});
+																}
+																else{
+																	res.json({"code":200});
+																}
+															}
+														);
+													}
+												}
+											);
+										}
+									}
+								);
+							}
+							else{
+								query = 'INSERT INTO ASSESSMENT (TYPE, A_DATE, SUB_ID, TOTAL_MARKS) VALUES(?,?,?,?)';
+								connection.query(query, [type,date,rows[0].ID,total],
+									function(err,rows,fields) {
+										if(err){
+											console.log("Failed to create new assessment");
+											res.json({"code":500});
+											connection.release();
+										}
+										else{
+											query = 'INSERT INTO MARKS (STD_ID, ASS_ID) VALUES (?,?)';
+											var values = [students[0].ID,rows.insertId];
+											for(var i=1; i<students.length; i++){
+												query += ',(?,?)';
+												values.push(students[i].ID);
+												values.push(rows.insertId);
+											}
+											connection.query(query, values,
+												function(err,rows,fields) {
+													connection.release();
+													if(err){
+														console.log("Failed to create new marklist");
+														res.json({"code":500});
+													}
+													else{
+														res.json({"code":200});
+													}
+												}
+											);
+										}
+									}
+								);
+							}
+						}
+					);
+				}
+			}
+
+		);
+
+		connection.on('error', function(err) {
+			console.log("Error occurred while performing database operation");
+			res.json({"code":500});
+        });
+	});
+});
+
+app.get('/get_assessment',function(req, res){
+
+	var clas = req.query.class;
+	var section = req.query.section;
+	var subject = req.query.subject;
+	var type = req.query.type;
+	var date = req.query.date;
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'SELECT DISTINCT ASSESSMENT.ID "ASS_ID", ASSESSMENT.TYPE, ASSESSMENT.A_DATE "DATE",'
+				  + ' ASSESSMENT.TOTAL_MARKS "TM", SUBJECT.NAME "SUBJECT", STUDENT.CLASS, STUDENT.SECTION'
+				  + ' FROM ASSESSMENT, SUBJECT,'
+				  + ' MARKS, STUDENT WHERE STUDENT.CLASS=? AND STUDENT.SECTION=? AND STUDENT.ID'
+				  + ' = MARKS.STD_ID AND MARKS.ASS_ID=ASSESSMENT.ID AND SUBJECT.NAME=? AND '
+				  + ' ASSESSMENT.TYPE=? AND ASSESSMENT.A_DATE=? AND ASSESSMENT.SUB_ID=SUBJECT.ID';
+
+		connection.query(query, [clas,section,subject,type,date],
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to fetch assessments");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200, "data":rows});
+				}
+			}
+
+		);
+
+		connection.on('error', function(err) {
+			console.log("Error occurred while performing database operation");
+			res.json({"code":500});
+        });
+	});
+
+});
+
 app.listen(PORT);

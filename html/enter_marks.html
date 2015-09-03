@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Add New Student - Allied School</title>
+	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="enter_marks.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="enter_marks.js"></script>
+</head>
+<body>
+	<div>
+		<form id="add-form" action="/add_assessment" method="post">
+			<input type="text" name="class" placeholder="class"/>
+			<input type="text" name="section" placeholder="Section"/>
+			<input type="text" name="subject" placeholder="Subject"/>
+			<input type="text" name="type" placeholder="Assessment"/>
+			<input type="number" name="total" placeholder="Total Marks"/>
+			<input type="date" id="ass_date" name="date"/>
+			<input type="submit" value="Add New"/>
+		</form>
+	</div>
+
+	<div>
+		<form id="search-form" action="/get_assessment" method="get">
+			<input type="text" name="class" placeholder="class"/>
+			<input type="text" name="section" placeholder="Section"/>
+			<input type="text" name="subject" placeholder="Subject"/>
+			<input type="text" name="type" placeholder="Assessment"/>
+			<input type="date" id="ass_date" name="date"/>
+			<input type="submit" value="Search"/>
+		</form>
+	</div>
+
+	<div>
+		<table id="search-result"></table>
+	</div>
+</body>
+</html>
