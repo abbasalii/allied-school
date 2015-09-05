@@ -23,10 +23,10 @@
 
 	<div>
 		<form id="search-form" action="/get_assessment" method="get">
-			<input type="text" name="class" placeholder="class"/>
-			<input type="text" name="section" placeholder="Section"/>
-			<input type="text" name="subject" placeholder="Subject"/>
-			<input type="text" name="type" placeholder="Assessment"/>
+			<input type="text" name="class" value="SE-3" placeholder="class"/>
+			<input type="text" name="section" value="A" placeholder="Section"/>
+			<input type="text" name="subject" value="MATHS" placeholder="Subject"/>
+			<input type="text" name="type" value="OHT-1" placeholder="Assessment"/>
 			<input type="date" id="ass_date" name="date"/>
 			<input type="submit" value="Search"/>
 		</form>
@@ -34,6 +34,11 @@
 
 	<div>
 		<table id="search-result"></table>
+	</div>
+
+	<div id="marksheet-div">
+		<table id="marksheet"></table>
+		<input id="update-marks" type='button' value='Update'/>
 	</div>
 </body>
 </html>

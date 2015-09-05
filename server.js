@@ -433,6 +433,40 @@ app.get('/send_sms',function(req, res){
 	}
 });
 
+app.get('/get_classlist',function(req, res){
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'SELECT DISTINCT CLASS FROM STUDENT';
+
+		connection.query(query,
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to fetch classlist");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200, "data":rows});
+				}
+			}
+
+		);
+
+		connection.on('error', function(err) {
+			console.log("Error occurred while performing database operation");
+			res.json({"code":500});
+        });
+	});
+
+});
+
 app.get('/view_report',function(req, res){
 
 	if(req.session.login){
@@ -666,6 +700,90 @@ app.get('/get_assessment',function(req, res){
         });
 	});
 
+});
+
+app.get('/get_marksheet',function(req, res){
+
+	var id = req.query.id;
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'SELECT DISTINCT STUDENT.ID "STD_ID", STUDENT.NAME, MARKS.ID "M_ID", MARKS.OBTAINED "OM" FROM STUDENT,'
+				  + ' MARKS WHERE MARKS.ASS_ID=? AND STUDENT.ID=MARKS.STD_ID';//AND MARKS.STD_ID=STUDENT.ID
+
+		connection.query(query, [id],
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to fetch marksheet");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200, "data":rows});
+				}
+			}
+
+		);
+
+		connection.on('error', function(err) {
+			console.log("Error occurred while performing database operation");
+			res.json({"code":500});
+        });
+	});
+
+});
+
+app.post('/update_marksheet',function(req,res){
+
+	var id = req.body.id;
+	var list = req.body.marks;
+
+
+	var query = 'REPLACE INTO MARKS (ID,STD_ID,ASS_ID,OBTAINED)'
+			  + ' VALUES (?,?,?,?)';
+	var values = [list[0].M_ID,list[0].STD_ID,id,list[0].OM];
+	for(var i=1; i<list.length; i++){
+
+		query += ', (?,?,?,?)';
+		values.push(list[i].M_ID);
+		values.push(list[i].STD_ID);
+		values.push(id);
+		values.push(list[i].OM);
+	}
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		connection.query(query, values,
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to update marksheet");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200});
+				}
+			}
+
+		);
+
+		connection.on('error', function(err) {
+			console.log("Error occurred while performing database operation");
+			res.json({"code":500});
+        });
+	});
 });
 
 app.listen(PORT);

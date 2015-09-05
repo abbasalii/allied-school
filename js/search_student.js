@@ -247,6 +247,8 @@ Google = new function(){
 			due += data.ANNUAL_FEE;
 		if(data.PROCESS_FEE)
 			due += data.PROCESS_FEE;
+		if(data.TRANSPORT)
+			due += data.TRANSPORT;
 
 		return due;
 	}
@@ -274,6 +276,11 @@ Google = new function(){
 		if(money==null || money==0)
 			money = "None";
 		$("#annual").html(money);
+
+		var money = fee.TRANSPORT;
+		if(money==null || money==0)
+			money = "None";
+		$("#transport").html(money);
 
 		var money = calculateFine(fee);
 		var world = money;
