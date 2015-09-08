@@ -1,17 +1,69 @@
+
+
+
+
 #student-div{
 	display: none;
+	position: absolute;
+	top:0;
+	left: 0;
+	background-color: #fff;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
 }
 
-#student-result-div{
+#student-result-container{
 	display: none;
+	position: absolute;
+	top:0;
+	left: 0;
+	background-color: #fff;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
 }
 
 #student-fee-div{
+	display: none;
+	position: absolute;
+	top:0;
+	left: 0;
+	background-color: #fff;
+	z-index: 3;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+
+#new-challan-div{
+	display: none;
+	position: absolute;
+	top:0;
+	left: 0;
+	background-color: #fff;
+	z-index: 4;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+
+#new-challan-student{
 	display: none;
 }
 
 #student-challan-div{
 	display: none;
+	position: absolute;
+	top:0;
+	left: 0;
+	background-color: #fff;
+	z-index: 4;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
 }
 
 #payment-div{
@@ -19,5 +71,37 @@
 }
 
 #invoice-id{
-	/*display: none;*/
+	display: none;
+}
+
+#print-view{
+/*	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #fff;
+	z-index: 0;
+	width: 100%;
+	height: 100%;*/
+}
+
+
+@media print{
+	#student-challan-div{
+		position: absolute;
+		top:0;
+		left: 0;
+		background-color: #fff;
+		z-index: 4;
+		width: 100%;
+		height: 100%;
+		overflow: visible;
+	}
+
+	.dismiss-btn{
+		display: none;
+	}
+
+	#print-btn-div{
+		display: none;
+	}
 }

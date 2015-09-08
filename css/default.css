@@ -1,0 +1,31 @@
+body{
+	background-color: #EEF9FD;
+}
+
+#header{
+	position: relative;
+	background-color: #98DAF1;
+	width: 100%;
+	height: 20px;
+	text-align: center;
+}
+
+#header-image{
+	width: 128px;
+}
+
+#logout-btn{
+	position: absolute;
+	right: 10px;
+}
+
+#content{
+	width: 100%;
+	margin-top: 160px;
+}
+
+.dismiss-btn{
+	position: absolute;
+	top:0;
+	right: 0;
+}

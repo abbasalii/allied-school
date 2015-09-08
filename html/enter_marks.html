@@ -2,22 +2,49 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Add New Student - Allied School</title>
+	<title>Enter Marks - Allied School</title>
 	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="default.css">
 	<link rel="stylesheet" type="text/css" href="enter_marks.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type="text/javascript" src="enter_marks.js"></script>
 </head>
 <body>
-	<div>
+	<div><input id="show-assessment-div" type="button" value="Add Assessment"></div>
+	<div id="add-assessment-div">
+		<input id="hide-assessment-div" class="dismiss-btn" type="button" value="X"/>
 		<form id="add-form" action="/add_assessment" method="post">
-			<input type="text" name="class" placeholder="class"/>
-			<input type="text" name="section" placeholder="Section"/>
-			<input type="text" name="subject" placeholder="Subject"/>
-			<input type="text" name="type" placeholder="Assessment"/>
-			<input type="number" name="total" placeholder="Total Marks"/>
-			<input type="date" id="ass_date" name="date"/>
-			<input type="submit" value="Add New"/>
+
+			<table>
+				<tr>
+					<td><label for="assessment-class">Class</label></td>
+					<td><input id="assessment-class" type="text" name="class" placeholder="" required/></td>
+				</tr>
+				<tr>
+					<td><label for="assessment-section">Section</label></td>
+					<td><input id="assessment-section" type="text" name="section" placeholder="" required/></td>
+				</tr>
+				<tr>
+					<td><label for="assessment-subject">Subject</label></td>
+					<td><input id="assessment-subject" type="text" name="subject" placeholder="" required/></td>
+				</tr>
+				<tr>
+					<td><label for="assessment-name">Assessment</label></td>
+					<td><input id="assessment-name" type="text" name="type" placeholder="" required/></td>
+				</tr>
+				<tr>
+					<td><label for="assessment-total">Total Marks</label></td>
+					<td><input id="assessment-total" type="number" name="total" placeholder="" required/></td>
+				</tr>
+				<tr>
+					<td><label for="assessment-date">Date</label></td>
+					<td><input id="assessment-date" type="date" id="ass_date" name="date" required/></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" value="Add New"/></td>
+				</tr>
+			</table>
 		</form>
 	</div>
 
@@ -37,6 +64,7 @@
 	</div>
 
 	<div id="marksheet-div">
+		<input id="hide-marksheet-div" class="dismiss-btn" type="button" value="X"/>
 		<table id="marksheet"></table>
 		<input id="update-marks" type='button' value='Update'/>
 	</div>

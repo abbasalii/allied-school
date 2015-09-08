@@ -112,6 +112,15 @@ Google = new function(){
 
 
 $(function(){
+
+	$("#show-assessment-div").click(function(){
+		$("#add-assessment-div").show();
+	});
+
+	$("#hide-assessment-div").click(function(){
+		$("#add-assessment-div").hide();
+	});
+
 	$('#add-form').submit(function(){
 		$.ajax({
 			url: $('#add-form').attr('action'),
@@ -146,6 +155,10 @@ $(function(){
 			}
 		});
 		return false;
+	});
+
+	$("#hide-marksheet-div").click(function(){
+		$("#marksheet-div").hide();
 	});
 
 	$("#update-marks").click(function(){

@@ -4,16 +4,20 @@
 	<meta charset="UTF-8">
 	<title>Login - Allied School</title>
 	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="default.css">
 	<link rel="stylesheet" type="text/css" href="login.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type="text/javascript" src="login.js"></script>
 </head>
 <body>
-	<form id="form" action="/login" method="post">
-		<input type="text" name="user" placeholder="Username" required/>
-		<input type="password" name="pass" placeholder="Password" required/>
-		<input type="submit" value="Login"/>
-	</form>
-	<div id="error">Invalid username of password</div>
+	<div id="login-div">
+		<form id="form" action="/login" method="post">
+			<div><img id="logo" src="/logo.png" alt="Logo"/></div>
+			<div><input class="input-field" type="text" name="user" placeholder="Username" required/></div>
+			<div><input class="input-field" type="password" name="pass" placeholder="Password" required/></div>
+			<div id="error">*invalid username or password</div>
+			<div><input class="input-button" type="submit" value="Login"/></div>
+		</form>
+	</div>
 </body>
 </html>

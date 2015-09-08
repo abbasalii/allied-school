@@ -9,6 +9,41 @@
 	<script type="text/javascript" src="generate_invoice.js"></script>
 </head>
 <body>
-	
+	<div id="audience"></div>
+	<div>
+		<div>
+			<label for="start-date">Starting Date:</label>
+			<input id="start-date" type="date"/>
+		</div>
+		<div>
+			<label for="end-date">Ending Date:</label>
+			<input id="end-date" type="date"/>
+		</div>
+		<div>
+			<label for="due-date">Due Date:</label>
+			<input id="due-date" type="date"/>
+		</div>
+		<div>
+			<label for="annual-fee">Annual Fee:</label>
+			<input id="annual-fee" type="number"/>
+		</div>
+		<div>
+			<label for="transport">Transport:</label>
+			<input id="transport" type="number"/>
+		</div>
+		<div>
+			<div>
+				<input id="send-sms" type="checkbox"/>
+				<label for="send-sms">Send SMS</label>
+			</div>
+			<div id="sms-div">
+				<textarea id="sms-area" cols="30" rows="10" placeholder="Enter your message here..."></textarea>
+			</div>
+		</div>
+
+		<div>
+			<input id="generate-btn" type="button" value="Generate"/>
+		</div>
+	</div>
 </body>
 </html>

@@ -37,6 +37,7 @@ Google = new function(){
 						if(response.code==200){
 							parent = response.data[0];
 							$("#student-name").val(result[ind].NAME);
+							$("#student-dob").val(toInputFormat(new Date(result[ind].DOB)));
 							$("#student-reg").val(result[ind].REG_NO);
 							$("#student-class").val(result[ind].CLASS);
 							$("#student-section").val(result[ind].SECTION);
@@ -44,6 +45,8 @@ Google = new function(){
 							$("#parent-cnic").val(parent.CNIC);
 							$("#student-phone").val(parent.PHONE);
 							$("#student-address").val(parent.ADDRESS);
+							$("#student-tuition").val(result[ind].TUITION);
+							$("#student-transport").val(result[ind].TRANSPORT);
 							$("#student-div").show();
 
 							$("#get-result-btn").unbind("click");
@@ -176,7 +179,8 @@ Google = new function(){
 
 		text += "</table>";
 
-		$("#student-result-div").html(text).show();
+		$("#student-result-div").html(text);
+		$("#student-result-container").show();
 	}
 
 	var getFeeHistory = function(){
@@ -193,6 +197,58 @@ Google = new function(){
 					alert("404");
 				}
 			}
+		});
+	}
+
+	this.editStudentInfo = function(){
+
+		$(".editable").each(function(){
+			$(this).prop("readonly",false);
+		});
+
+
+		$("#edit-std-btn").unbind("click");
+		$("#edit-std-btn").val("Save Changes");
+		$("#edit-std-btn").click(function(){
+
+			var object = {};
+			object['STD_ID'] = result[ind].ID;
+			object['NAME'] = $("#student-name").val();
+			object['DOB'] = $("#student-dob").val();
+			object['REG_NO'] = $("#student-reg").val();
+			object['CLASS'] = $("#student-class").val();
+			object['SECTION'] = $("#student-section").val();
+			object['P_ID'] = parent.ID;
+			object['PARENT'] = $("#parent-name").val();
+			object['CNIC'] = $("#parent-cnic").val();
+			object['PHONE'] = $("#student-phone").val();
+			object['ADDRESS'] = $("#student-address").val();
+			object['TUITION'] = $("#student-tuition").val();
+			object['TRANSPORT'] = $("#student-transport").val();
+
+			$.ajax({
+				url: "/update_student_info",
+				type: "post",
+				data : object,
+				success: function(response){
+					if(response.code==200){
+						// console.log(response.data);
+						alert("200");
+					}
+					else{
+						alert("404");
+					}
+				}
+			});
+
+			$(".editable").each(function(){
+				$(this).prop("readonly",true);
+			});
+
+
+			$("#edit-std-btn").unbind("click");
+			$("#edit-std-btn").val("Update Student Info");
+			$("#edit-std-btn").click(Google.editStudentInfo);
 		});
 	}
 
@@ -305,6 +361,7 @@ Google = new function(){
 			$("#invoice-id").val(fee.ID);
 			$("#enter-date").val(getToday());
 			$("#payment-div").show();
+			$("#print-btn-div").hide();
 		}
 		$("#status").html(status);
 
@@ -320,7 +377,12 @@ Google = new function(){
 	}
 
 	var getToday = function(){
+
 		var date = new Date();
+		return toInputFormat(date);
+	}
+
+	var toInputFormat = function(date){
 
 		var day = date.getDate();
 		var month = date.getMonth() + 1;
@@ -336,6 +398,11 @@ Google = new function(){
 	this.paymentSuccess = function(){
 		alert("done");
 	}
+
+	this.showNewChallanForm = function(){
+		$("#new-challan-div").show();
+		$("#new-challan-student").val(result[ind].ID);
+	}
 }
 
 
@@ -349,6 +416,28 @@ $(function(){
 				if(response.code==200){
 					// console.log(response.data);
 					Google.displayResult(response.data);
+				}
+				else{
+					alert("404");
+				}
+			}
+		});
+		return false;
+	});
+
+	$("#edit-std-btn").click(Google.editStudentInfo);
+
+	$("#issue-challan").click(Google.showNewChallanForm);
+
+	$('#new-challan-form').submit(function(){
+		$.ajax({
+			url: $('#new-challan-form').attr('action'),
+			type: "post",
+			data : $('#new-challan-form').serialize(),
+			success: function(response){
+				if(response.code==200){
+					// console.log(response.data);
+					alert("200");
 				}
 				else{
 					alert("404");
@@ -374,5 +463,29 @@ $(function(){
 			}
 		});
 		return false;
+	});
+
+	$("#print-btn-div").click(function(){
+		window.print();
+	});
+
+	$("#hide-student-div").click(function(){
+		$("#student-div").hide();
+	});
+
+	$("#hide-result-div").click(function(){
+		$("#student-result-container").hide();
+	});
+
+	$("#hide-fee-div").click(function(){
+		$("#student-fee-div").hide();
+	});
+
+	$("#hide-challan-div").click(function(){
+		$("#student-challan-div").hide();
+	});
+
+	$("#hide-new-challan-div").click(function(){
+		$("#new-challan-div").hide();
 	});
 });

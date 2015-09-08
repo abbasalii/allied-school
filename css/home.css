@@ -1,0 +1,16 @@
+.home-icon{
+	width: 128px;
+	height: 128px;
+	border: 2px solid #58BAD5;
+	border-radius: 50%;
+	float: left;
+}
+
+.home-icon > a{
+	width: 100%;
+	height: 100%;
+}
+
+#upper-container{
+	clear: both;
+}

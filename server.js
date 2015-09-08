@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('js'));
 app.use(express.static('css'));
+app.use(express.static('img'));
 
 app.get('/home',function(req, res){
 
@@ -79,10 +80,10 @@ app.post('/login',function(req,res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 });
 
@@ -113,7 +114,8 @@ app.post('/add_student',function(req,res){
 	var phone = req.body.phone;
 	var fname = req.body.fname;
 	var cnic = req.body.cnic;
-	console.log("DOB: "+dob);
+	var tuition = req.body.tution;
+	var transport = req.body.transport;
 
 	pool.getConnection(function(err,connection){
 
@@ -141,8 +143,9 @@ app.post('/add_student',function(req,res){
 								res.json({"code":500});
 							}
 							else{
-								query = 'INSERT INTO STUDENT (REG_NO, NAME, DOB, P_ID, CLASS, SECTION) VALUES (?,?,?,?,?,?)';
-								connection.query(query,[reg_no,name,dob,rows.insertId, clas, section],
+								query = 'INSERT INTO STUDENT (REG_NO, NAME, DOB, P_ID, CLASS,'
+									  + ' SECTION,TUITION, TRANSPORT) VALUES (?,?,?,?,?,?,?,?)';
+								connection.query(query,[reg_no,name,dob,rows.insertId, clas, section,tuition,transport],
 									function(err,rows,fields){
 
 										connection.release();
@@ -160,8 +163,9 @@ app.post('/add_student',function(req,res){
 					);
 				}
 				else{
-					query = 'INSERT INTO STUDENT (REG_NO, NAME, DOB, P_ID, CLASS, SECTION) VALUES (?,?,?,?,?,?)';
-					connection.query(query,[reg_no,name,dob,rows[0]['ID'], clas, section],
+					query = 'INSERT INTO STUDENT (REG_NO, NAME, DOB, P_ID, CLASS, SECTION,'
+						  + 'TUITION, TRANSPORT) VALUES (?,?,?,?,?,?,?,?)';
+					connection.query(query,[reg_no,name,dob,rows[0]['ID'], clas, section,tuition,transport],
 						function(err,rows,fields){
 
 							connection.release();
@@ -179,10 +183,10 @@ app.post('/add_student',function(req,res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 });
 
@@ -249,10 +253,11 @@ app.post('/search_student',function(req,res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	connection.release();
+		// 	res.json({"code":500});
+  //       });
 	});
 });
 
@@ -284,12 +289,85 @@ app.get('/student_detail',function(req, res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	connection.release();
+		// 	res.json({"code":500});
+  //       });
 	});
 });
+
+app.post('/update_student_info',function(req,res){
+
+	var id = req.body.STD_ID;
+	var name = req.body.NAME;
+	var dob = req.body.DOB;
+	var reg_no = req.body.REG_NO;
+	var clas = req.body.CLASS;
+	var section = req.body.SECTION;
+	var pid = req.body.P_ID;
+	var parent = req.body.PARENT;
+	var cnic = req.body.CNIC;
+	var address = req.body.ADDRESS;
+	var phone = req.body.PHONE;
+	var tuition = req.body.TUITION;
+	var transport = req.body.TRANSPORT;
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'UPDATE PARENT SET NAME=?, CNIC=?, ADDRESS=?, PHONE=? WHERE ID=?';
+
+		connection.query(query, [parent,cnic,address,phone,pid],
+			function(err,rows,fields) {
+
+				if(err){
+					console.log("Failed to update parent info");
+					connection.release();
+					res.json({"code":500});
+				}
+				else{
+					query = 'UPDATE STUDENT SET REG_NO=?, NAME=?, DOB=?, CLASS=?, SECTION=?,'
+						  + ' TUITION=?, TRANSPORT=? WHERE ID=?';
+					connection.query(query, [reg_no,name,dob,clas,section,tuition,transport,id],
+						function(err,rows,fields) {
+
+							connection.release();
+							if(err){
+								console.log("Failed to update student info");
+								res.json({"code":500});
+							}
+							else{
+								res.json({"code":200});
+							}
+						}
+
+					);
+				}
+			}
+
+		);
+
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
+	});
+});
+
+var getCurrentSession = function(){
+
+	var date = new Date();
+	var year = parseInt(date.getFullYear());
+	if(date.getMonth()>6)
+		return year
+	return year-1;
+
+}
 
 app.get('/student_result',function(req, res){
 
@@ -306,9 +384,10 @@ app.get('/student_result',function(req, res){
 					+ ' WHERE MARKS.ASS_ID=ASSESSMENT.ID'
 					+ ' and ASSESSMENT.SUB_ID=SUBJECT.ID'
 					+ ' and MARKS.STD_ID=?'
+					+ ' and ASSESSMENT.SESSON = ?'
 					+ ' ORDER BY ASSESSMENT.A_DATE';
 
-		connection.query(query, [id],
+		connection.query(query, [id,getCurrentSession()],
 			function(err,rows,fields) {
 
 				connection.release();
@@ -323,10 +402,10 @@ app.get('/student_result',function(req, res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 });
 
@@ -358,10 +437,58 @@ app.get('/student_fee_history',function(req, res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
+	});
+});
+
+app.post('/new_challan',function(req,res){
+
+	var id = req.body.id;
+	var st_mon = req.body.st_mon;
+	var end_mon = req.body.end_mon;
+	var ad_fee = req.body.ad_fee;
+	var security = req.body.security;
+	var ann_fee = req.body.ann_fee;
+	var pro_fee = req.body.pro_fee;
+	var tui_fee = req.body.tui_fee;
+	var transport = req.body.transport;
+	var due_date = req.body.due_date;
+
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
 			res.json({"code":500});
-        });
+		}
+
+		var query = 'INSERT INTO CHALLAN (STD_ID, ST_MON, END_MON, ADMISSION_FEE, TUTION_FEE,'
+				  + ' SECURITY, ANNUAL_FEE, PROCESS_FEE, TRANSPORT, ISSUE_DATE, DUE_DATE, STATUS) VALUES'
+				  + ' (?,?,?,?,?,?,?,?,?,CURDATE(),?,0)';
+		console.log(query);
+		connection.query(query, [id,st_mon,end_mon,ad_fee,tui_fee,security,ann_fee,pro_fee,transport,due_date],
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to issue new challan");
+					console.log(err);
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200});
+				}
+			}
+
+		);
+
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 });
 
@@ -396,10 +523,10 @@ app.post('/pay_invoice',function(req,res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 });
 
@@ -411,6 +538,82 @@ app.get('/generate_invoice',function(req, res){
 	else{
 		res.redirect('/login');
 	}
+});
+
+app.post('/generate_invoice',function(req,res){
+
+	var list = req.body.list;
+	var st_date = req.body.st_date;
+	var end_date = req.body.end_date;
+	var due_date = req.body.due_date;
+	var annual = req.body.annual;
+	var transport = req.body.transport;
+
+	var day = 24*60*60*1000;
+	var temp = 1 + (new Date(end_date).getTime() - new Date(st_date).getTime())/day;
+	var factor = parseInt(temp/28);
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'SELECT ID, TUITION, TRANSPORT FROM STUDENT WHERE CLASS IN (?';
+		for(var i=1; i<list.length; i++)
+			query += ', ?';
+		query += ')';
+
+		connection.query(query, list,
+			function(err,rows,fields) {
+
+				if(err){
+					console.log("Failed to fetch list of students");
+					res.json({"code":500});
+					connection.release();
+				}
+				else{
+					query = 'INSERT INTO CHALLAN (STD_ID, ST_MON, END_MON, TUTION_FEE, ANNUAL_FEE'
+						  + ', TRANSPORT, ISSUE_DATE, DUE_DATE) VALUES (?,?,?,?,?,?,CURDATE(),?)';
+
+					var values = [rows[0].ID, st_date,end_date,rows[0].TUITION*factor, annual, rows[0].TRANSPORT, due_date];
+
+					for(var i=1; i<rows.length; i++){
+						query += ',(?,?,?,?,?,?,CURDATE(),?)';
+						values.push(rows[i].ID);
+						values.push(st_date);
+						values.push(end_date);
+						values.push(rows[i].TUITION*factor);
+						values.push(annual);
+						values.push(rows[0].TRANSPORT);
+						values.push(due_date);
+					}
+
+					connection.query(query, values,
+						function(err,rows,fields) {
+
+							connection.release();
+							if(err){
+								console.log("Failed to generate new challan");
+								res.json({"code":500});
+							}
+							else{
+								res.json({"code":200});
+							}
+						}
+
+					);
+				}
+			}
+
+		);
+
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
+	});
 });
 
 app.get('/print_invoice',function(req, res){
@@ -459,10 +662,10 @@ app.get('/get_classlist',function(req, res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 
 });
@@ -493,9 +696,9 @@ app.get('/get_report',function(req, res){
 				  + ' SUBJECT.NAME "SUBJECT", ASSESSMENT.TYPE "TYPE", ASSESSMENT.TOTAL_MARKS "TM",'
 				  + ' MARKS.OBTAINED "OM" FROM SUBJECT, ASSESSMENT, MARKS, STUDENT WHERE STUDENT.CLASS=?'
 				  + ' AND STUDENT.SECTION=? AND STUDENT.ID=MARKS.STD_ID AND MARKS.ASS_ID=ASSESSMENT.ID'
-				  + ' AND ASSESSMENT.SUB_ID=SUBJECT.ID;';
+				  + ' AND ASSESSMENT.SUB_ID=SUBJECT.ID AND ASSESSMENT.SESSON=?;';
 
-		connection.query(query, [clas,section],
+		connection.query(query, [clas,section,getCurrentSession()],
 			function(err,rows,fields) {
 
 				connection.release();
@@ -510,10 +713,10 @@ app.get('/get_report',function(req, res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 
 });
@@ -575,8 +778,8 @@ app.post('/add_assessment',function(req,res){
 											connection.release();
 										}
 										else{
-											query = 'INSERT INTO ASSESSMENT (TYPE, A_DATE, SUB_ID, TOTAL_MARKS) VALUES(?,?,?,?)';
-											connection.query(query, [type,date,rows.insertId,total],
+											query = 'INSERT INTO ASSESSMENT (TYPE, SESSON, A_DATE, SUB_ID, TOTAL_MARKS) VALUES(?,?,?,?,?)';
+											connection.query(query, [type,getCurrentSession(), date,rows.insertId,total],
 												function(err,rows,fields) {
 													if(err){
 														console.log("Failed to create new assessment");
@@ -611,8 +814,8 @@ app.post('/add_assessment',function(req,res){
 								);
 							}
 							else{
-								query = 'INSERT INTO ASSESSMENT (TYPE, A_DATE, SUB_ID, TOTAL_MARKS) VALUES(?,?,?,?)';
-								connection.query(query, [type,date,rows[0].ID,total],
+								query = 'INSERT INTO ASSESSMENT (TYPE, SESSON, A_DATE, SUB_ID, TOTAL_MARKS) VALUES(?,?,?,?,?)';
+								connection.query(query, [type,getCurrentSession(), date,rows[0].ID,total],
 									function(err,rows,fields) {
 										if(err){
 											console.log("Failed to create new assessment");
@@ -650,10 +853,10 @@ app.post('/add_assessment',function(req,res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 });
 
@@ -674,12 +877,35 @@ app.get('/get_assessment',function(req, res){
 
 		var query = 'SELECT DISTINCT ASSESSMENT.ID "ASS_ID", ASSESSMENT.TYPE, ASSESSMENT.A_DATE "DATE",'
 				  + ' ASSESSMENT.TOTAL_MARKS "TM", SUBJECT.NAME "SUBJECT", STUDENT.CLASS, STUDENT.SECTION'
-				  + ' FROM ASSESSMENT, SUBJECT,'
-				  + ' MARKS, STUDENT WHERE STUDENT.CLASS=? AND STUDENT.SECTION=? AND STUDENT.ID'
-				  + ' = MARKS.STD_ID AND MARKS.ASS_ID=ASSESSMENT.ID AND SUBJECT.NAME=? AND '
-				  + ' ASSESSMENT.TYPE=? AND ASSESSMENT.A_DATE=? AND ASSESSMENT.SUB_ID=SUBJECT.ID';
+				  + ' FROM ASSESSMENT, SUBJECT, MARKS, STUDENT WHERE STUDENT.ID = MARKS.STD_ID AND MARKS.ASS_ID=ASSESSMENT.ID'
+				  + ' AND ASSESSMENT.SUB_ID=SUBJECT.ID';
+		var values = [];
 
-		connection.query(query, [clas,section,subject,type,date],
+		if(clas){
+			query += ' AND STUDENT.CLASS=?';
+			values.push(clas);
+			if(section){
+				query += ' AND STUDENT.SECTION=?';
+				values.push(section);
+			}
+		}
+
+		if(subject){
+			query += ' AND SUBJECT.NAME=?';
+			values.push(subject);
+		}
+
+		if(type){
+			query += ' AND ASSESSMENT.TYPE=?';
+			values.push(type);
+		}
+
+		if(date){
+			query += ' AND ASSESSMENT.A_DATE=?';
+			values.push(date);
+		}
+
+		connection.query(query, values,
 			function(err,rows,fields) {
 
 				connection.release();
@@ -694,10 +920,10 @@ app.get('/get_assessment',function(req, res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 
 });
@@ -714,7 +940,7 @@ app.get('/get_marksheet',function(req, res){
 		}
 
 		var query = 'SELECT DISTINCT STUDENT.ID "STD_ID", STUDENT.NAME, MARKS.ID "M_ID", MARKS.OBTAINED "OM" FROM STUDENT,'
-				  + ' MARKS WHERE MARKS.ASS_ID=? AND STUDENT.ID=MARKS.STD_ID';//AND MARKS.STD_ID=STUDENT.ID
+				  + ' MARKS WHERE MARKS.ASS_ID=? AND STUDENT.ID=MARKS.STD_ID';
 
 		connection.query(query, [id],
 			function(err,rows,fields) {
@@ -731,10 +957,10 @@ app.get('/get_marksheet',function(req, res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 
 });
@@ -779,10 +1005,10 @@ app.post('/update_marksheet',function(req,res){
 
 		);
 
-		connection.on('error', function(err) {
-			console.log("Error occurred while performing database operation");
-			res.json({"code":500});
-        });
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
 	});
 });
 
