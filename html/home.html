@@ -6,27 +6,31 @@
 	<link rel="stylesheet" type="text/css" href="reset.css">
 	<link rel="stylesheet" type="text/css" href="default.css">
 	<link rel="stylesheet" type="text/css" href="home.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="home.js"></script>
 </head>
 <body>
 	<div id="header">
 		<img id="header-image" src="/header.png" />
+		<h1 id="header-title">Allied School Bosan Road Campus, Multan</h1>
 		<a id="logout-btn" href="/logout">Logout</a>
 	</div>
 	<div id="content">
 
-		<div id="upper-container">
-			<a href="/add_student"><div class="home-icon">Add New Student</div></a>
-			<a href="/search_student"><div class="home-icon">Search Student</div></a>
-			<a href="/generate_invoice"><div class="home-icon">Generate Invoice</div></a>
-			<!-- <div><a href="/print_invoice">Print Invoice</a></div> -->
-			<a href="/send_sms"><div class="home-icon">Send SMS</div></a>
+		<div id="menu-wrapper-upper">
+			<ul class="menu">
+				<li><a class="menu-item" href="/add_student">Add New Student</a></li>
+				<li><a class="menu-item" href="/search_student">Search Student</a></li>
+				<li><a class="menu-item" href="/generate_invoice">Generate Invoice</a></li>
+				<li><a class="menu-item" href="/send_sms">Send SMS</a></li>
+			</ul>
 		</div>
-		</br>
-		<div id="lower-container">
-			<a href="/view_report"><div class="home-icon">View Report</div></a>
-			<a href="/enter_marks"><div class="home-icon">Enter Marks</div></a>
+		<div id="menu-wrapper-lower">
+			<ul class="menu">
+				<li><a class="menu-item" href="/view_report">View Report</a></li>
+				<li><a class="menu-item" href="/enter_marks">Enter Marks</a></li>
+				<li><a class="menu-item" href="#">Promote Students</a></li>
+			</ul>
 		</div>
 	</div>
 	<div id="footer"></div>

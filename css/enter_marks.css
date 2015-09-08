@@ -10,6 +10,27 @@
 	overflow: auto;
 }
 
+#result-div{
+	width: 640px;
+	margin: 0 auto;
+}
+
+#search-result{
+	border: 1px solid #98DAF1;
+}
+
+#search-result th{
+	border: 1px solid #98DAF1;
+	padding: 8px;
+	background-color:  #29ABE2;
+	color: #fff;
+}
+
+#search-result td{
+	border: 1px solid #98DAF1;
+	padding: 8px;
+}
+
 #marksheet-div{
 	display: none;
 	position: absolute;

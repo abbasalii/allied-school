@@ -4,13 +4,47 @@
 	border: 2px solid #58BAD5;
 	border-radius: 50%;
 	float: left;
+	padding: 64px;
 }
 
-.home-icon > a{
-	width: 100%;
-	height: 100%;
+#menu-wrapper-upper {
+	width: 754px;
+	height: 150px;
+	display: table;
+	border-spacing: 16px 0;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 32px;
 }
-
-#upper-container{
+#menu-wrapper-lower {
+	width: 574px;
+	height: 150px;
+	display: table;
+	border-spacing: 16px 0;
+	margin: 32px auto 32px auto;
+}
+.menu {
+	list-style: none;
 	clear: both;
+}
+.menu li {
+	float: left;
+}
+.menu-item {
+	display: table-cell;
+	vertical-align: middle;
+	width: 128px;
+	height: 128px;
+	border: 5px solid #98DAF1;
+	border-radius: 76px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16pt;
+	font-weight: bold;
+	color: #000;
+}
+
+.menu-item:hover {
+	cursor: pointer;
+	border-color: #81828E
 }

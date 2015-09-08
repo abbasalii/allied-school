@@ -4,15 +4,23 @@
 	<meta charset="UTF-8">
 	<title>Send Notification - Allied School</title>
 	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="default.css">
 	<link rel="stylesheet" type="text/css" href="send_sms.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="send_sms.js"></script>
 </head>
 <body>
-	<div id="audience"></div>
-	<div>
-		<textarea name="" id="" cols="30" rows="10" placeholder="Type Your message here..."></textarea>
-		<input id="send-btn" type="button" value='Send'/>
+	<div id="header">
+		<img id="header-image" src="/header.png" />
+		<h1 id="header-title">Allied School Bosan Road Campus, Multan</h1>
+		<a id="logout-btn" href="/logout">Logout</a>
+	</div>
+	<div id="content">
+		<div id="audience"></div>
+		<div>
+			<textarea name="" id="" cols="30" rows="10" placeholder="Type Your message here..."></textarea>
+			<input id="send-btn" type="button" value='Send'/>
+		</div>
 	</div>
 </body>
 </html>

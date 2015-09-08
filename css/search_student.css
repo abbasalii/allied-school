@@ -1,7 +1,3 @@
-
-
-
-
 #student-div{
 	display: none;
 	position: absolute;
@@ -104,4 +100,35 @@
 	#print-btn-div{
 		display: none;
 	}
+}
+
+#search-result-div{
+	width: 512px;
+	margin: 0 auto;
+}
+
+#search-result-tab{
+	border: 1px solid #98DAF1;
+}
+
+#search-result-tab th{
+	border: 1px solid #98DAF1;
+	padding: 8px;
+	background-color:  #29ABE2;
+	color: #fff;
+}
+
+#search-result-tab td{
+	border: 1px solid #98DAF1;
+	padding: 8px;
+}
+
+.detail-btn-class{
+	border: none;
+	outline: none;
+	background: rgba(0,0,0,0);
+}
+
+.detail-btn-class:hover{
+	cursor: pointer;
 }

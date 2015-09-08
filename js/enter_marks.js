@@ -14,12 +14,12 @@ Google = new function(){
 
 			text += "<tr>";
 
-			text += "<td>" + (i+1) + "</td>";
+			text += "<td class='center'>" + (i+1) + "</td>";
 			text += "<td>" + data[i].CLASS + "</td>";
-			text += "<td>" + data[i].SECTION + "</td>";
+			text += "<td class='center'>" + data[i].SECTION + "</td>";
 			text += "<td>" + data[i].SUBJECT + "</td>";
 			text += "<td>" + data[i].TYPE + "</td>";
-			text += "<td>" + data[i].TM + "</td>";
+			text += "<td class='center'>" + data[i].TM + "</td>";
 			text += "<td>" + "<input class='edit-btn-class' type='button' value='Edit'/>" + "</td>";
 
 			text += "</tr>";

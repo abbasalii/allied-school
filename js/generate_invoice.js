@@ -94,5 +94,27 @@ $(function(){
 		}
 	});
 
+	$("#add-annual").change(function(){
+
+		if($(this).is(':checked')){
+
+			$("#annual-fee").show();
+		}
+		else{
+			$("#annual-fee").hide();
+		}
+	});
+
+	$("#add-transport").change(function(){
+
+		if($(this).is(':checked')){
+
+			$("#transport").show();
+		}
+		else{
+			$("#transport").hide();
+		}
+	});
+
 	$("#generate-btn").click(Google.generateInvoice);
 });

@@ -1,0 +1,25 @@
+#search-div{
+	width: 640px;
+	margin: 0 auto;
+}
+
+#report-div{
+	width: 512px;
+	margin: 0 auto;
+}
+
+#report-tab{
+	border: 1px solid #98DAF1;
+}
+
+#report-tab th{
+	border: 1px solid #98DAF1;
+	padding: 8px;
+	background-color:  #29ABE2;
+	color: #fff;
+}
+
+#report-tab td{
+	border: 1px solid #98DAF1;
+	padding: 8px;
+}

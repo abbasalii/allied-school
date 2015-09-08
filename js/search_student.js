@@ -14,11 +14,11 @@ Google = new function(){
 		var text = "<tr><th>INDEX</th><th>REG #</th><th>NAME</th><th>CLASS</th><th>SECTION</th><th>VIEW</th></tr>";
 		for(var i=0; i<data.length; i++){
 			text += "<tr>";
-			text += "<td>" + (i+1) + "</td>";
-			text += "<td>" + data[i].REG_NO + "</td>";
-			text += "<td>" + data[i].NAME + "</td>";
-			text += "<td>" + data[i].CLASS + "</td>";
-			text += "<td>" + data[i].SECTION + "</td>";
+			text += "<td class='center'><span>" + (i+1) + "</span></td>";
+			text += "<td><span>" + data[i].REG_NO + "</span></td>";
+			text += "<td><span>" + data[i].NAME + "</span></td>";
+			text += "<td><span>" + data[i].CLASS + "</span></td>";
+			text += "<td class='center'><span>" + data[i].SECTION + "</span></td>";
 			text += "<td>" + "<input class='detail-btn-class' type='button' value='View'/>" + "</td>";
 			text += "</tr>";
 		}

@@ -4,45 +4,55 @@
 	<meta charset="UTF-8">
 	<title>Generate Fee Invoice - Allied School</title>
 	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="default.css">
 	<link rel="stylesheet" type="text/css" href="generate_invoice.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="generate_invoice.js"></script>
 </head>
 <body>
-	<div id="audience"></div>
-	<div>
-		<div>
-			<label for="start-date">Starting Date:</label>
-			<input id="start-date" type="date"/>
-		</div>
-		<div>
-			<label for="end-date">Ending Date:</label>
-			<input id="end-date" type="date"/>
-		</div>
-		<div>
-			<label for="due-date">Due Date:</label>
-			<input id="due-date" type="date"/>
-		</div>
-		<div>
-			<label for="annual-fee">Annual Fee:</label>
-			<input id="annual-fee" type="number"/>
-		</div>
-		<div>
-			<label for="transport">Transport:</label>
-			<input id="transport" type="number"/>
-		</div>
+	<div id="header">
+		<img id="header-image" src="/header.png" />
+		<h1 id="header-title">Allied School Bosan Road Campus, Multan</h1>
+		<a id="logout-btn" href="/logout">Logout</a>
+	</div>
+	<div id="content">
+		<div id="audience"></div>
 		<div>
 			<div>
-				<input id="send-sms" type="checkbox"/>
-				<label for="send-sms">Send SMS</label>
+				<label for="start-date">Starting Date:</label>
+				<input id="start-date" type="date"/>
 			</div>
-			<div id="sms-div">
-				<textarea id="sms-area" cols="30" rows="10" placeholder="Enter your message here..."></textarea>
+			<div>
+				<label for="end-date">Ending Date:</label>
+				<input id="end-date" type="date"/>
 			</div>
-		</div>
+			<div>
+				<label for="due-date">Due Date:</label>
+				<input id="due-date" type="date"/>
+			</div>
+			<div>
+				<input id="add-annual" type="checkbox"/>
+				<label for="add-annual">Annual Fee</label>
+				<input id="annual-fee" type="number"/>
+			</div>
+			<div>
+				<input id="add-transport" type="checkbox"/>
+				<label for="add-transport">Transport</label>
+				<input id="transport" type="number"/>
+			</div>
+			<div>
+				<div>
+					<input id="send-sms" type="checkbox"/>
+					<label for="send-sms">Send SMS</label>
+				</div>
+				<div id="sms-div">
+					<textarea id="sms-area" cols="30" rows="10" placeholder="Enter your message here..."></textarea>
+				</div>
+			</div>
 
-		<div>
-			<input id="generate-btn" type="button" value="Generate"/>
+			<div>
+				<input id="generate-btn" type="button" value="Generate"/>
+			</div>
 		</div>
 	</div>
 </body>

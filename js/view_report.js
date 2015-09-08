@@ -67,7 +67,7 @@ $(function(){
 
 				var subtotal = 0;
 				var subobtain = 0;
-				text += "<td>";
+				text += "<td class='center'>";
 				for(var k=0; k<data.length; k++){
 					if(students[i].ID==data[k].STD_ID && subjects[j].ID==data[k].SUB_ID){
 						subtotal += data[k].TM;
@@ -85,7 +85,7 @@ $(function(){
 				}
 				text += "</td>";
 			}
-			text += "<td>";
+			text += "<td class='center'>";
 			if(rowtotal>0){
 				text += ((rowobtain*100)/rowtotal).toFixed(2);
 			}
@@ -101,12 +101,12 @@ $(function(){
 		for(var i=0; i<subjects.length; i++){
 			total += coltotal[i];
 			obtain += colobtain[i];
-			text += "<td>";
+			text += "<td class='center'>";
 			if(coltotal[i]>0)
 				text += ((colobtain[i]*100)/coltotal[i]).toFixed(2);
 			text += "</td>";
 		}
-		text += "<td>" + ((obtain*100)/total).toFixed(2) + "</td>";
+		text += "<td class='center'>" + ((obtain*100)/total).toFixed(2) + "</td>";
 		text += "</tr>";
 
 		$("#report-tab").html(text);
