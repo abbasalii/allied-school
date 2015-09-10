@@ -241,13 +241,25 @@ app.post('/search_student',function(req,res){
 		connection.query(query, values,
 			function(err,rows,fields) {
 
-				connection.release();
 				if(err){
+					connection.release();
 					console.log("Failed to fetch users");
 					res.json({"code":500});
 				}
 				else{
-					res.json({"code":200, "data":rows});
+					var std_data = rows;
+					query = 'SELECT * FROM CLASS';
+					connection.query(query,function(err,rows,fields){
+
+						connection.release();
+						if(err){
+							console.log("Failed to fetch users");
+							res.json({"code":500});
+						}
+						else{
+							res.json({"code":200, "data": std_data, "class":rows});
+						}
+					});
 				}
 			}
 
@@ -645,7 +657,7 @@ app.get('/get_classlist',function(req, res){
 			res.json({"code":500});
 		}
 
-		var query = 'SELECT DISTINCT CLASS FROM STUDENT';
+		var query = 'SELECT * FROM CLASS WHERE ID<100';
 
 		connection.query(query,
 			function(err,rows,fields) {
@@ -684,7 +696,8 @@ app.get('/get_report',function(req, res){
 
 	var clas = req.query.class;
 	var section = req.query.section;
-
+console.log("class: "+clas);
+console.log("sect: "+section);
 	pool.getConnection(function(err,connection){
 
 		if (err) {
@@ -739,6 +752,14 @@ app.post('/add_assessment',function(req,res){
 	var type = req.body.type;
 	var total = req.body.total;
 	var date = req.body.date;
+
+	console.log(clas);
+	console.log(section);
+	console.log(subject);
+	console.log(type);
+	console.log(total);
+	console.log(date);
+	return;
 
 	pool.getConnection(function(err,connection){
 
@@ -878,8 +899,8 @@ app.get('/get_assessment',function(req, res){
 		var query = 'SELECT DISTINCT ASSESSMENT.ID "ASS_ID", ASSESSMENT.TYPE, ASSESSMENT.A_DATE "DATE",'
 				  + ' ASSESSMENT.TOTAL_MARKS "TM", SUBJECT.NAME "SUBJECT", STUDENT.CLASS, STUDENT.SECTION'
 				  + ' FROM ASSESSMENT, SUBJECT, MARKS, STUDENT WHERE STUDENT.ID = MARKS.STD_ID AND MARKS.ASS_ID=ASSESSMENT.ID'
-				  + ' AND ASSESSMENT.SUB_ID=SUBJECT.ID';
-		var values = [];
+				  + ' AND ASSESSMENT.SUB_ID=SUBJECT.ID AND ASSESSMENT.SESSON=?';
+		var values = [getCurrentSession()];
 
 		if(clas){
 			query += ' AND STUDENT.CLASS=?';
@@ -1009,6 +1030,36 @@ app.post('/update_marksheet',function(req,res){
 		// 	console.log("Error occurred while performing database operation");
 		// 	res.json({"code":500});
   //       });
+	});
+});
+
+
+app.post('/promote_students',function(req,res){
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'UPDATE STUDENT SET CLASS = ('
+				  + ' SELECT NEXT FROM CLASS WHERE ID=STUDENT.CLASS )'
+				  + ' WHERE CLASS<100';
+		connection.query(query,
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to update marksheet");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200});
+				}
+			}
+
+		);
 	});
 });
 

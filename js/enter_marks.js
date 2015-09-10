@@ -3,6 +3,17 @@ Google = new function(){
 	var search = null;
 	var ass_id = -1;
 	var marksheet = null;
+	var cList = null;
+
+	this.setClassDataList = function(data){
+
+		cList = data;
+
+		var text = "";
+		for(var i=0; i<cList.length; i++)
+			text += "<option>" + cList[i].TITLE + "</option>";
+		$("#cList").html(text);
+	}
 
 	this.displaySearchResult = function(data){
 
@@ -15,12 +26,18 @@ Google = new function(){
 			text += "<tr>";
 
 			text += "<td class='center'>" + (i+1) + "</td>";
-			text += "<td>" + data[i].CLASS + "</td>";
+			for(var j=0; j<cList.length; j++){
+				if(cList[j].ID==data[i].CLASS){
+					text += "<td>" + cList[j].TITLE + "</td>";
+					break;
+				}
+			}
+			
 			text += "<td class='center'>" + data[i].SECTION + "</td>";
 			text += "<td>" + data[i].SUBJECT + "</td>";
 			text += "<td>" + data[i].TYPE + "</td>";
 			text += "<td class='center'>" + data[i].TM + "</td>";
-			text += "<td>" + "<input class='edit-btn-class' type='button' value='Edit'/>" + "</td>";
+			text += "<td class='center'>" + "<input class='edit-btn-class' type='button' value='Edit'/>" + "</td>";
 
 			text += "</tr>";
 		}
@@ -62,9 +79,9 @@ Google = new function(){
 
 			text += "<tr>";
 
-			text += "<td>" + (i+1) + "</td>";
-			text += "<td>" + data[i].NAME + "</td>";
-			text += "<td>" + "<input class='update-btn-class' type='number' value='"+data[i].OM+"'/>" + "</td>";
+			text += "<td class='center'>" + (i+1) + "</td>";
+			text += "<td class='student-name-class'>" + data[i].NAME + "</td>";
+			text += "<td>" + "<input class='input-field marks-field' type='number' value='"+data[i].OM+"'/>" + "</td>";
 
 			text += "</tr>";
 		}
@@ -77,7 +94,7 @@ Google = new function(){
 	this.updateMarks = function(){
 
 		var list = [];
-		$(".update-btn-class").each(function(){
+		$(".marks-field").each(function(){
 
 			var obj = {};
 			var marks = $(this).val();
@@ -108,10 +125,32 @@ Google = new function(){
 			}
 		});
 	}
+
+	this.findClassId = function(title){
+
+		for(var i=0; i<cList.length; i++)
+			if(cList[i].TITLE==title)
+				return cList[i].ID;
+
+		return null;
+	}
 }
 
 
 $(function(){
+
+	$.ajax({
+		url: "/get_classlist",
+		type: "get",
+		success: function(response){
+			if(response.code==200){
+				Google.setClassDataList(response.data);
+			}
+			else{
+				alert("404");
+			}
+		}
+	});
 
 	$("#show-assessment-div").click(function(){
 		$("#add-assessment-div").show();
@@ -122,10 +161,21 @@ $(function(){
 	});
 
 	$('#add-form').submit(function(){
+
+		var obj = {};
+
+		var clas = $("#assessment-class").val().trim().toUpperCase();
+		obj['class'] = Google.findClassId(clas);
+		obj['section'] = $("#assessment-section").val();
+		obj['subject'] = $("#assessment-subject").val();
+		obj['type'] = $("#assessment-name").val();
+		obj['total'] = $("#assessment-total").val();
+		obj['date'] = $("#ass_date").val();
+
 		$.ajax({
 			url: $('#add-form').attr('action'),
 			type: "post",
-			data : $('#add-form').serialize(),
+			data : obj,//$('#add-form').serialize(),
 			success: function(response){
 				if(response.code==200){
 					// console.log(response.data);
@@ -140,10 +190,20 @@ $(function(){
 	});
 
 	$('#search-form').submit(function(){
+
+		var obj = {};
+
+		var clas = $("#search-class").val().trim().toUpperCase();
+		obj['class'] = Google.findClassId(clas);
+		obj['section'] = $("#search-section").val();
+		obj['subject'] = $("#search-subject").val();
+		obj['type'] = $("#search-type").val();
+		obj['ass_date'] = $("#search-date").val();
+
 		$.ajax({
 			url: $('#search-form').attr('action'),
 			type: "get",
-			data : $('#search-form').serialize(),
+			data : obj,//$('#search-form').serialize(),
 			success: function(response){
 				if(response.code==200){
 					console.log(response.data);

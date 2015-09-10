@@ -6,6 +6,11 @@ Google = new function(){
 	var tests = null;
 	var challan = null;
 	var chalind = -1;
+	var cList = null;
+
+	this.setClassList = function(data){
+		cList = data;
+	}
 
 	this.displayResult = function(data){
 
@@ -17,7 +22,12 @@ Google = new function(){
 			text += "<td class='center'><span>" + (i+1) + "</span></td>";
 			text += "<td><span>" + data[i].REG_NO + "</span></td>";
 			text += "<td><span>" + data[i].NAME + "</span></td>";
-			text += "<td><span>" + data[i].CLASS + "</span></td>";
+			for(var j=0; j<cList.length; j++){
+				if(cList[j].ID==data[i].CLASS){
+					text += "<td><span>" + cList[j].TITLE + "</span></td>";
+					break;
+				}
+			}
 			text += "<td class='center'><span>" + data[i].SECTION + "</span></td>";
 			text += "<td>" + "<input class='detail-btn-class' type='button' value='View'/>" + "</td>";
 			text += "</tr>";
@@ -39,7 +49,12 @@ Google = new function(){
 							$("#student-name").val(result[ind].NAME);
 							$("#student-dob").val(toInputFormat(new Date(result[ind].DOB)));
 							$("#student-reg").val(result[ind].REG_NO);
-							$("#student-class").val(result[ind].CLASS);
+							for(var j=0; j<cList.length; j++){
+								if(cList[j].ID==result[ind].CLASS){
+									$("#student-class").val(cList[j].TITLE);
+								}
+							}
+							
 							$("#student-section").val(result[ind].SECTION);
 							$("#parent-name").val(parent.NAME);
 							$("#parent-cnic").val(parent.CNIC);
@@ -122,7 +137,7 @@ Google = new function(){
 		cols.push("TOTAL");
 		cols.push("PERCENTAGE");
 
-		var text = "<table>";
+		var text = "<table id='student-result-tab'>";
 		text += "<tr>";
 		for(var i=0; i<cols.length; i++)
 			text += "<th>" + cols[i] + "</th>";
@@ -137,7 +152,7 @@ Google = new function(){
 			var total = 0;
 			for(var j=0; j<ass.length; j++){
 
-				text += "<td>";
+				text += "<td class='center'>";
 
 				for(var k=0; k<tests.length; k++){
 					if(tests[k].NAME==sub[i] && tests[k].TYPE==ass[j]){
@@ -154,8 +169,8 @@ Google = new function(){
 				text += "</td>";
 			}
 
-			text += "<td>"+ sum + "/" + total + "</td>";
-			text += "<td>"+ ((sum*100)/total).toFixed(2) +"</td>";
+			text += "<td class='center'>"+ sum + "/" + total + "</td>";
+			text += "<td class='center'>"+ ((sum*100)/total).toFixed(2) +"</td>";
 
 			text += "</tr>";
 		}
@@ -167,13 +182,13 @@ Google = new function(){
 		var cumobt = 0;
 		for(var i=0; i<assum.length; i++){
 
-			text += "<td>" + assob[i] + "/" + assum[i] + "</td>";
+			text += "<td class='center'>" + assob[i] + "/" + assum[i] + "</td>";
 			cumtotal += assum[i];
 			cumobt += assob[i];
 		}
 
-		text += "<td>"+cumobt+"/"+cumtotal+"</td>";
-		text += "<td>"+((cumobt*100)/cumtotal).toFixed(2)+"</td>";
+		text += "<td class='center'>"+cumobt+"/"+cumtotal+"</td>";
+		text += "<td class='center'>"+((cumobt*100)/cumtotal).toFixed(2)+"</td>";
 
 		text += "</tr>";
 
@@ -216,7 +231,14 @@ Google = new function(){
 			object['NAME'] = $("#student-name").val();
 			object['DOB'] = $("#student-dob").val();
 			object['REG_NO'] = $("#student-reg").val();
-			object['CLASS'] = $("#student-class").val();
+			var temp = $("#student-class").val().trim().toUpperCase();
+			for(var i=0; i<cList.length; i++){
+				if(cList[i].TITLE==temp){
+					object['CLASS'] = cList[i].ID;
+					break;
+				}
+			}
+			// object['CLASS'] = $("#student-class").val();
 			object['SECTION'] = $("#student-section").val();
 			object['P_ID'] = parent.ID;
 			object['PARENT'] = $("#parent-name").val();
@@ -415,6 +437,7 @@ $(function(){
 			success: function(response){
 				if(response.code==200){
 					// console.log(response.data);
+					Google.setClassList(response.class);
 					Google.displayResult(response.data);
 				}
 				else{

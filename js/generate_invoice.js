@@ -2,7 +2,7 @@ Google = new function(){
 
 	var classes = null;
 
-	this.displaySubjects = function(data){
+	this.displayClassList = function(data){
 
 		classes = data;
 
@@ -11,7 +11,7 @@ Google = new function(){
 		for(var i=0; i<data.length; i++){
 
 			text += "<input class='sub-check' id='subject"+i+"' type='checkbox'/>";
-			text += "<label for='subject"+i+"' >"+data[i].CLASS+"</label>";
+			text += "<label for='subject"+i+"' >"+data[i].TITLE+"</label>";
 		}
 
 		$("#audience").html(text);
@@ -75,7 +75,7 @@ $(function(){
 		success: function(response){
 			if(response.code==200){
 				console.log(response.data);
-				Google.displaySubjects(response.data);
+				Google.displayClassList(response.data);
 			}
 			else{
 				alert("404");
@@ -87,10 +87,10 @@ $(function(){
 
 		if($(this).is(':checked')){
 
-			$("#sms-div").show();
+			$("#sms-area").prop("disabled",false);
 		}
 		else{
-			$("#sms-div").hide();
+			$("#sms-area").prop("disabled",true);
 		}
 	});
 
@@ -98,10 +98,10 @@ $(function(){
 
 		if($(this).is(':checked')){
 
-			$("#annual-fee").show();
+			$("#annual-fee").prop("disabled",false);
 		}
 		else{
-			$("#annual-fee").hide();
+			$("#annual-fee").prop("disabled",true);
 		}
 	});
 
@@ -109,10 +109,10 @@ $(function(){
 
 		if($(this).is(':checked')){
 
-			$("#transport").show();
+			$("#transport").prop("disabled",false);
 		}
 		else{
-			$("#transport").hide();
+			$("#transport").prop("disabled",true);
 		}
 	});
 

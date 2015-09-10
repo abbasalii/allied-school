@@ -1,20 +1,59 @@
 $(function(){
-	$('#form').submit(function(){
-		$.ajax({
-			url: $('#form').attr('action'),
-			type: "get",
-			data : $('#form').serialize(),
-			success: function(response){
-				if(response.code==200){
 
-					console.log(response.data);
-					displayReport(response.data);
-				}
-				else{
-					alert("404");
-				}
+	var cList = null;
+
+	$.ajax({
+		url: "/get_classlist",
+		type: "get",
+		success: function(response){
+			if(response.code==200){
+				// console.log(response.data);
+				cList = response.data;
+				setClassDataList();
 			}
-		});
+			else{
+				alert("404");
+			}
+		}
+	});
+
+	var setClassDataList = function(){
+
+		var text = "";
+		for(var i=0; i<cList.length; i++)
+			text += "<option>" + cList[i].TITLE + "</option>";
+		$("#cList").html(text);
+	}
+
+
+	$('#form').submit(function(){
+
+		var clas = $("#class").val().trim().toUpperCase();
+		var sec = $("#section").val().trim().toUpperCase();
+		var cid = 0;
+		for(var i=0; i<cList.length; i++){
+			if(cList[i].TITLE==clas){
+				cid = cList[i].ID;
+				break
+			}
+		}
+		if(cid>0){
+			$.ajax({
+				url: $('#form').attr('action'),
+				type: "get",
+				data : {"class":cid,"section":sec},
+				success: function(response){
+					if(response.code==200){
+
+						console.log(response.data);
+						displayReport(response.data);
+					}
+					else{
+						alert("404");
+					}
+				}
+			});
+		}
 		return false;
 	});
 

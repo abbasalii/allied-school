@@ -11,7 +11,7 @@ Google = new function(){
 		for(var i=0; i<data.length; i++){
 
 			text += "<input class='sub-check' id='subject"+i+"' type='checkbox'/>";
-			text += "<label for='subject"+i+"' >"+data[i].CLASS+"</label>";
+			text += "<label for='subject"+i+"' >"+data[i].TITLE+"</label>";
 		}
 
 		$("#audience").html(text);

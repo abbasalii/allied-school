@@ -35,57 +35,59 @@
 
 			<input id="hide-student-div" class="dismiss-btn" type="button" value="X"/>
 
-			<table>
-				<tr>
-					<td><label for="student-name">Student's Name</label></td>
-					<td><input class="editable" id="student-name" type="text" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="student-dob">Date of Birth</label></td>
-					<td><input class="editable" id="student-dob" type="date" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="student-reg">Registration No</label></td>
-					<td><input class="editable" id="student-reg" type="text" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="student-class">Class</label></td>
-					<td><input class="editable" id="student-class" type="text" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="student-section">Section</label></td>
-					<td><input class="editable" id="student-section" type="text" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="parent-name">Parent/Guardian</label></td>
-					<td><input class="editable" id="parent-name" type="text" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="parent-cnic">CNIC</label></td>
-					<td><input class="editable" id="parent-cnic" type="text" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="student-phone">Phone</label></td>
-					<td><input class="editable" id="student-phone" type="text" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="student-address">Address</label></td>
-					<td><textarea class="editable" id="student-address" readonly></textarea></td>
-				</tr>
-				<tr>
-					<td><label for="student-tuition"></label>Tuition Fee</td>
-					<td><input class="editable" id="student-tuition" type="number" readonly/></td>
-				</tr>
-				<tr>
-					<td><label for="student-transport">Transport</label></td>
-					<td><input class="editable" id="student-transport" type="number" readonly/></td>
-				</tr>
-			</table>
-			
+			<div id="student-info-div">
+				<table id="student-info-tab">
+					<tr>
+						<td class="input-label"><label for="student-name">Student's Name</label></td>
+						<td><input class="editable input-field" id="student-name" type="text" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="student-dob">Date of Birth</label></td>
+						<td><input class="editable input-field" id="student-dob" type="date" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="student-reg">Registration No</label></td>
+						<td><input class="editable input-field" id="student-reg" type="text" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="student-class">Class</label></td>
+						<td><input class="editable input-field" id="student-class" type="text" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="student-section">Section</label></td>
+						<td><input class="editable input-field" id="student-section" type="text" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="parent-name">Parent/Guardian</label></td>
+						<td><input class="editable input-field" id="parent-name" type="text" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="parent-cnic">CNIC</label></td>
+						<td><input class="editable input-field" id="parent-cnic" type="text" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="student-phone">Phone</label></td>
+						<td><input class="editable input-field" id="student-phone" type="text" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="student-address">Address</label></td>
+						<td><textarea class="editable input-field" id="student-address" readonly></textarea></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="student-tuition"></label>Tuition Fee</td>
+						<td><input class="editable input-field" id="student-tuition" type="number" readonly/></td>
+					</tr>
+					<tr>
+						<td class="input-label"><label for="student-transport">Transport</label></td>
+						<td><input class="editable input-field" id="student-transport" type="number" readonly/></td>
+					</tr>
+				</table>
+				
 
-			<input id="edit-std-btn" type="button" value="Update Student Info"/>
-			<input id="get-result-btn" type="button" value="View Result" />
-			<input id="get-fee-btn" type="button" value="View Fee History" />
+				<input id="edit-std-btn" type="button" value="Update Student Info"/>
+				<input id="get-result-btn" type="button" value="View Result" />
+				<input id="get-fee-btn" type="button" value="View Fee History" />
+			</div>
 		</div>
 
 		<div id="student-result-container">
@@ -95,58 +97,63 @@
 
 		<div id="student-fee-div">
 			<input id="hide-fee-div" class="dismiss-btn" type="button" value="X"/>
-			<input id="issue-challan" type="button" value="Issue Challan"/>
-			<table id="student-fee-tab"></table>
+			<div id="student-fee-inner">
+				<div class="left"><table id="student-fee-tab"></table></div>
+				<div class="left"><input id="issue-challan" type="button" value="Issue Challan"/></div>
+			</div>
 		</div>
 
 		<div id="new-challan-div">
 			<input id="hide-new-challan-div" class="dismiss-btn" type="button" value="X"/>
-			<form id="new-challan-form" action="/new_challan" action="post">
 
-				<input id="new-challan-student" name="id" type="number"/>
-				<table>
-					<tr>
-						<td><label for="new-st_mon">From</label></td>
-						<td><input id="new-st_mon" name="st_mon" type="date"/></td>
-					</tr>
-					<tr>
-						<td><label for="new-end_mon">To</label></td>
-						<td><input id="new-end_mon" name="end_mon" type="date"/></td>
-					</tr>
-					<tr>
-						<td><label for="new-ad_fee">Admission Fee</label></td>
-						<td><input id="new-ad_fee" name="ad_fee" type="number" placeholder="Admission Fee"/></td>
-					</tr>
-					<tr>
-						<td><label for="new-security">Security</label></td>
-						<td><input id="new-security" name="security" type="number" value="2000" placeholder="Security"/></td>
-					</tr>
-					<tr>
-						<td><label for="new-ann_fee">Annual Fee</label></td>
-						<td><input id="new-ann_fee" name="ann_fee" type="number" value="1000" placeholder="Annual Fee"/></td>
-					</tr>
-					<tr>
-						<td><label for="new-pro_fee">Processing Fee</label></td>
-						<td><input id="new-pro_fee" name="pro_fee" type="number" value="200" placeholder="Processing Fee"/></td>
-					</tr>
-					<tr>
-						<td><label for="new-tui_fee">Tuition Fee</label></td>
-						<td><input id="new-tui_fee" name="tui_fee" type="number" value="2420" placeholder="Tuition Fee"/></td>
-					</tr>
-					<tr>
-						<td><label for="new-transport">Transport</label></td>
-						<td><input id="new-transport" name="transport" type="number" value="500" placeholder="Transport"/></td>
-					</tr>
-					<tr>
-						<td><label for="new-due_date">Due Date</label></td>
-						<td><input id="new-due_date" name="due_date" type="date"/></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input type="submit" value="Issue"/></td>
-					</tr>
-				</table>
-			</form>
+			<div id="new-challan-inner">
+				<form id="new-challan-form" action="/new_challan" action="post">
+
+					<input id="new-challan-student" name="id" type="number"/>
+					<table>
+						<tr>
+							<td class="input-label"><label for="new-st_mon">From</label></td>
+							<td><input class="input-field" id="new-st_mon" name="st_mon" type="date"/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="new-end_mon">To</label></td>
+							<td><input class="input-field" id="new-end_mon" name="end_mon" type="date"/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="new-ad_fee">Admission Fee</label></td>
+							<td><input class="input-field" id="new-ad_fee" name="ad_fee" type="number" placeholder="Admission Fee"/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="new-security">Security</label></td>
+							<td><input class="input-field" id="new-security" name="security" type="number" value="2000" placeholder="Security"/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="new-ann_fee">Annual Fee</label></td>
+							<td><input class="input-field" id="new-ann_fee" name="ann_fee" type="number" value="1000" placeholder="Annual Fee"/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="new-pro_fee">Processing Fee</label></td>
+							<td><input class="input-field" id="new-pro_fee" name="pro_fee" type="number" value="200" placeholder="Processing Fee"/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="new-tui_fee">Tuition Fee</label></td>
+							<td><input class="input-field" id="new-tui_fee" name="tui_fee" type="number" value="2420" placeholder="Tuition Fee"/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="new-transport">Transport</label></td>
+							<td><input class="input-field" id="new-transport" name="transport" type="number" value="500" placeholder="Transport"/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="new-due_date">Due Date</label></td>
+							<td><input class="input-field" id="new-due_date" name="due_date" type="date"/></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input class="input-button" type="submit" value="Issue"/></td>
+						</tr>
+					</table>
+				</form>
+			</div>
 		</div>
 
 		<div id="student-challan-div">
