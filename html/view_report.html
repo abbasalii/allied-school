@@ -17,11 +17,13 @@
 	</div>
 	<div id="content">
 		<div id="search-div">
-			<form id="form" action="/get_report">
-				<input class="input-report" id="class" type="text" name="class" placeholder="Class" list="cList" required/>
-				<input class="input-report" id="section" type="text" name="section" placeholder="Section" required/>
-				<input class="report-button" type="submit" value="View"/>
-			</form>
+			<div id="search-inner">
+				<form id="form" action="/get_report">
+					<input class="input-report" id="class" type="text" name="class" placeholder="Class" list="cList" required/>
+					<input class="input-report" id="section" type="text" name="section" placeholder="Section" required/>
+					<input class="report-button" type="submit" value="View"/>
+				</form>
+			</div>
 		</div>
 		<div id="report-div">
 			<table id="report-tab"></table>

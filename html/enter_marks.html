@@ -16,15 +16,23 @@
 		<a id="logout-btn" href="/logout">Logout</a>
 	</div>
 	<div id="content">
-		<div>
-			<form id="search-form" action="/get_assessment" method="get">
-				<input class="input-field" id="search-class" type="text" name="class" placeholder="class" list="cList"/>
-				<input class="input-field" id="search-section" type="text" name="section" placeholder="Section"/>
-				<input class="input-field" id="search-subject" type="text" name="subject" placeholder="Subject"/>
-				<input class="input-field" id="search-type" type="text" name="type" placeholder="Assessment"/>
-				<input class="input-field" id="search-date" type="date" id="ass_date" name="date"/>
-				<input class="input-button" type="submit" value="Search"/>
-			</form>
+		<div id="search-div">
+			<div id="search-inner">
+				<form id="search-form" action="/get_assessment" method="get">
+					<table id="search-filter-tab">
+						<tr>
+							<td><input class="search-field" id="search-class" type="text" name="class" placeholder="class" list="cList"/></td>
+							<td><input class="search-field" id="search-section" type="text" name="section" placeholder="Section"/></td>
+							<td><input class="search-field" id="search-subject" type="text" name="subject" placeholder="Subject"/></td>
+						</tr>
+						<tr>
+							<td><input class="search-field" id="search-type" type="text" name="type" placeholder="Assessment"/></td>
+							<td><input class="search-date" id="search-date" type="date" id="ass_date" name="date"/></td>
+							<td><input class="search-button" type="submit" value="Search"/></td>
+						</tr>
+					</table>
+				</form>
+			</div>
 		</div>
 
 		<div id="result-div">
@@ -34,9 +42,9 @@
 			</div>
 		</div>
 
-		<div id="add-assessment-div">
-			<input id="hide-assessment-div" class="dismiss-btn" type="button" value="X"/>
-			<div id="add-assessment-inner">
+		<div id="add-assessment-div" class="popup-container">
+			<div id="add-assessment-inner" class="popup-inner">
+				<input id="hide-assessment-div" class="dismiss-btn" type="button" value="X"/>
 				<form id="add-form" action="/add_assessment" method="post">
 
 					<table id="add-ass-tab">

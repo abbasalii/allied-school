@@ -1,12 +1,18 @@
-#student-div{
-	border: 2px solid #29ABE2;
-	border-radius: 32px;
-	width: 448px;
-	margin: 32px auto;
-	text-align: center;
-	padding: 10px;
+#sub-head{
+	font-size: 16pt;
+	color: #195294;
 }
 
+#student-div{
+	text-align: center;
+}
+
+#student-inner{
+	display: inline-block;
+	border: 1px solid #29ABE2;
+	border-radius: 32px;
+	padding: 10px;
+}
 
 #messagebox{
 	display: none;

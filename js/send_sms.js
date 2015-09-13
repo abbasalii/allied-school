@@ -6,13 +6,15 @@ Google = new function(){
 
 		subjects = data;
 
-		var text = "<input id='suball' type='checkbox'/>";
-		text += "<label for='suball' >All</label>";
+		var text = "<div><input id='suball' type='checkbox'/>";
+		text += "<label for='suball' >All</label></div>";
+		text += "<div>";
 		for(var i=0; i<data.length; i++){
 
 			text += "<input class='sub-check' id='subject"+i+"' type='checkbox'/>";
 			text += "<label for='subject"+i+"' >"+data[i].TITLE+"</label>";
 		}
+		text += "</div>";
 
 		$("#audience").html(text);
 

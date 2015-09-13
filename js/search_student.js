@@ -16,7 +16,8 @@ Google = new function(){
 
 		result = data;
 
-		var text = "<tr><th>INDEX</th><th>REG #</th><th>NAME</th><th>CLASS</th><th>SECTION</th><th>VIEW</th></tr>";
+		var text = "<tr><th>INDEX</th><th>REG #</th><th>NAME</th><th>CLASS</th>"
+				 + "<th>SECTION</th><th>VIEW</th><th>RESULT</th><th>FEE</th></tr>";
 		for(var i=0; i<data.length; i++){
 			text += "<tr>";
 			text += "<td class='center'><span>" + (i+1) + "</span></td>";
@@ -29,7 +30,9 @@ Google = new function(){
 				}
 			}
 			text += "<td class='center'><span>" + data[i].SECTION + "</span></td>";
-			text += "<td>" + "<input class='detail-btn-class' type='button' value='View'/>" + "</td>";
+			text += "<td>" + "<input class='table-btn detail-btn-class' type='button' value='Info'/>" + "</td>";
+			text += "<td>" + "<input class='table-btn result-btn-class' type='button' value='Result'/>" + "</td>";
+			text += "<td>" + "<input class='table-btn fee-btn-class' type='button' value='Fee'/>" + "</td>";
 			text += "</tr>";
 		}
 
@@ -64,16 +67,32 @@ Google = new function(){
 							$("#student-transport").val(result[ind].TRANSPORT);
 							$("#student-div").show();
 
-							$("#get-result-btn").unbind("click");
-							$("#get-result-btn").click(getResult);
-							$("#get-fee-btn").unbind("click");
-							$("#get-fee-btn").click(getFeeHistory);
+							// $("#get-result-btn").unbind("click");
+							// $("#get-result-btn").click(getResult);
+							// $("#get-fee-btn").unbind("click");
+							// $("#get-fee-btn").click(getFeeHistory);
 						}
 						else{
 							alert("404");
 						}
 					}
 				});
+			});
+		});
+
+		$(".result-btn-class").each(function(){
+
+			$(this).click(function(){
+				ind = $(this).closest('tr').index() - 1;
+				getResult();
+			});
+		});
+
+		$(".fee-btn-class").each(function(){
+
+			$(this).click(function(){
+				ind = $(this).closest('tr').index() - 1;
+				getFeeHistory();
 			});
 		});
 	}

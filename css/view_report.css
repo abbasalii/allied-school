@@ -2,12 +2,13 @@
 	text-align: center;
 }
 
-#form{
+#search-inner{
 	display: inline-block;
-	border: 2px solid #29ABE2;
-	border-radius: 32px;
+	border: 1px solid #29ABE2;
+	border-radius: 8px;
 	padding: 8px 16px;
 }
+
 
 .input-report{
 	border-radius: 10px;

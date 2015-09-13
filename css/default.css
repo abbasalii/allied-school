@@ -13,6 +13,8 @@ body{
 #header-image{
 	width: 128px;
 	margin: 8px;
+	position: relative;
+	z-index: 1000;
 }
 
 #header-title{
@@ -33,7 +35,28 @@ body{
 
 #content{
 	width: 100%;
-	margin-top: 128px;
+	margin-top: 48px;
+}
+
+.popup-container{
+	display: none;
+	position: absolute;
+	top:72px;
+	left: 0;
+	background-color: #EEF9FD;
+	width: 100%;
+	min-height: 100%;
+	overflow: auto;
+	text-align: center;
+	padding:16px 0;
+}
+
+.popup-inner{
+	position: relative;
+	display: inline-block;
+	border: 1px solid #29ABE2;
+	border-radius: 32px;
+	padding: 16px 32px;
 }
 
 .input-field{
@@ -55,15 +78,16 @@ body{
 }
 
 .input-button{
-	width: 96px;
+	/*width: 96px;*/
 	height: 32px;
 	text-align: center;
 	vertical-align: middle;
 	background: #29ABE2;
 	color: #fff;
-	margin: 16px;
+	margin: 4px 0;
 	border-radius: 4px;
 	border: 2px solid #29ABE2;
+	padding: 0 8px;
 }
 
 .input-label{
@@ -71,14 +95,42 @@ body{
 	padding-right: 4px;
 }
 
+.area-label-outer{
+	position: relative;
+}
+
+.area-label-inner{
+    position: absolute;
+    top: 12px;
+    right: 4px;
+}
+
 .dismiss-btn{
 	position: absolute;
 	top:0;
 	right: 0;
+	margin: -8px -8px 0 0;
+	border-radius: 50%;
+    background-color: #98DAF1;
+    border: none;
+    color: #fff;
+    font-size: 14pt;
+    font-weight: bold;
+    width: 32px;
+    height: 32px;
+}
+
+.dismiss-btn:hover{
+	cursor: pointer;
+    background-color: #98DAFF;
 }
 
 .center{
 	text-align: center;
+}
+
+.righted{
+	text-align: right;
 }
 
 .left{
@@ -87,4 +139,21 @@ body{
 
 .right{
 	float: right;
+}
+
+.sub-head{
+	font-size: 16pt;
+	font-weight: bold;
+	color: #195294;
+}
+
+.table-btn{
+	border: none;
+	outline: none;
+	background: rgba(0,0,0,0);
+	font-weight: bold;
+}
+
+.table-btn:hover{
+	cursor: pointer;
 }

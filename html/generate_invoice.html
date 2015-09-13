@@ -17,8 +17,11 @@
 	</div>
 	<div id="content">
 		<div id="container">
-			<div>
+			<div id="inner">
 				<table>
+					<tr>
+						<td colspan="2"><h2 class="sub-head">Generate Invoices</h2></td>
+					</tr>
 					<tr>
 						<td class="input-label">Class:</td>
 						<td id="audience"></td>
@@ -50,9 +53,11 @@
 						<td><input class="input-field" id="transport" type="number" disabled/></td>
 					</tr>
 					<tr>
-						<td class="input-label">
-							<label for="send-sms">Send SMS</label>
-							<input id="send-sms" type="checkbox"/>
+						<td class="area-label-outer">
+							<span class="area-label-inner">
+								<label for="send-sms">Send SMS</label>
+								<input id="send-sms" type="checkbox"/>
+							</span>
 						</td>
 						<td><textarea class="input-area" id="sms-area" placeholder="Enter your message here..." disabled></textarea></td>
 					</tr>
