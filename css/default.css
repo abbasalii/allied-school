@@ -68,6 +68,10 @@ body{
 	outline: none;
 }
 
+.input-field:disabled{
+	background: rgba(0,0,0,0.1);
+}
+
 .input-area{
 	width: 224px;
 	margin: 4px 0;
@@ -77,8 +81,12 @@ body{
 	outline: none;
 }
 
+.input-area:disabled{
+	background: rgba(0,0,0,0.1);
+}
+
 .input-button{
-	/*width: 96px;*/
+	min-width: 96px;
 	height: 32px;
 	text-align: center;
 	vertical-align: middle;
@@ -156,4 +164,44 @@ body{
 
 .table-btn:hover{
 	cursor: pointer;
+}
+
+#messagebox{
+	display: none;
+	position: absolute;
+	top:0;
+	left: 0;
+	z-index: 1001;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	background: rgba(0,0,0,0.3);
+}
+
+#messagebox-inner{
+	position: relative;
+	background-color: #EEF9FD;
+	width: 256px;
+	min-height: 128px;
+	margin: 0 auto;
+	margin-top: 20%;
+
+	border: 1px solid #29ABE2;
+	border-radius: 16px;
+	padding: 16px;
+	display: table;
+}
+
+#messagebox-core{
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#user-message{
+	
+}
+
+#hide-message-box{
+	margin-top: 16px;
+	margin-bottom: 8px;
 }

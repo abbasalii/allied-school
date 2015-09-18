@@ -58,6 +58,7 @@
 #result-inner{
 	display: inline-block;
 	min-width: 768px;
+	padding: 32px 0;
 }
 
 #search-result{
@@ -77,20 +78,11 @@
 }
 
 #marksheet-div{
-	display: none;
-	position: absolute;
-	top:140px;
-	left: 0;
-	background-color: #EEF9FD;
 	z-index: 1;
-	min-width: 100%;
-	min-height: 100%;
-	overflow: auto;
-	text-align: center;
 }
 
 #marksheet-inner{
-	display: inline-block;
+	/*display: inline-block;*/
 }
 
 #marksheet{

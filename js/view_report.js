@@ -2,6 +2,10 @@ $(function(){
 
 	var cList = null;
 
+	$("#hide-message-box").click(function(){
+		$("#messagebox").hide();
+	});
+
 	$.ajax({
 		url: "/get_classlist",
 		type: "get",
@@ -49,7 +53,7 @@ $(function(){
 						displayReport(response.data);
 					}
 					else{
-						alert("404");
+						displayMessageBox("Failed to retrieve report");
 					}
 				}
 			});
@@ -58,6 +62,14 @@ $(function(){
 	});
 
 	var displayReport = function(data){
+
+		$("#report-tab").html("");
+
+		if(data.length==0){
+
+			displayMessageBox("No result found!");
+			return;
+		}
 
 		var students = [];
 		var subjects = [];
@@ -149,5 +161,11 @@ $(function(){
 		text += "</tr>";
 
 		$("#report-tab").html(text);
+	}
+
+	displayMessageBox = function(msg){
+
+		$("#user-message").html(msg);
+		$("#messagebox").show();
 	}
 });

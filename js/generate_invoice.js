@@ -64,18 +64,28 @@ Google = new function(){
 			data: object,
 			success: function(response){
 				if(response.code==200){
-					alert("200");
+					Google.displayMessageBox("Invoices successfully generated");
 				}
 				else{
-					alert("404");
+					Google.displayMessageBox("Unable to generate invoices!");
 				}
 			}
 		});		
+	}
+
+	this.displayMessageBox = function(msg){
+
+		$("#user-message").html(msg);
+		$("#messagebox").show();
 	}
 }
 
 
 $(function(){
+
+	$("#hide-message-box").click(function(){
+		$("#messagebox").hide();
+	});
 
 	$.ajax({
 		url: "/get_classlist",
@@ -102,6 +112,41 @@ $(function(){
 		}
 	});
 
+	$('#form').submit(function(){
+
+		var i = 0;
+		var list = [];
+		$(".sub-check").each(function(){
+
+			if($(this).prop('checked'))
+				list.push(classes[i].CLASS);
+			i++;
+		});
+
+		var object = {};
+		object.list = list;
+		object.st_date = $("#start-date").val();
+		object.end_date = $("#end-date").val();
+		object.due_date = $("#due-date").val();
+		object.annual = $("#annual-fee").val();
+		object.transport = $("#transport").val();
+
+		$.ajax({
+			url: $('#form').attr('action'),
+			type: "post",
+			data: object,
+			success: function(response){
+				if(response.code==200){
+					alert("200");
+				}
+				else{
+					alert("404");
+				}
+			}
+		});
+		return false;
+	});
+
 	$("#add-annual").change(function(){
 
 		if($(this).is(':checked')){
@@ -124,5 +169,5 @@ $(function(){
 		}
 	});
 
-	$("#generate-btn").click(Google.generateInvoice);
+	// $("#generate-btn").click(Google.generateInvoice);
 });

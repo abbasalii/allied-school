@@ -228,7 +228,7 @@ app.post('/search_student',function(req,res){
 			values.push(like);
 
 			if(clas){
-				query += ' AND CLASS=?';
+				query += ' AND CLASS=(SELECT ID FROM CLASS WHERE TITLE=UPPER(?))';
 				values.push(clas);
 
 				if(section){
@@ -682,6 +682,40 @@ app.get('/get_classlist',function(req, res){
 
 });
 
+app.get('/get_subjectlist',function(req, res){
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'SELECT * FROM SUBJECT';
+
+		connection.query(query,
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to fetch subjectlist");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200, "data":rows});
+				}
+			}
+
+		);
+
+		// connection.on('error', function(err) {
+		// 	console.log("Error occurred while performing database operation");
+		// 	res.json({"code":500});
+  //       });
+	});
+
+});
+
 app.get('/view_report',function(req, res){
 
 	if(req.session.login){
@@ -753,13 +787,13 @@ app.post('/add_assessment',function(req,res){
 	var total = req.body.total;
 	var date = req.body.date;
 
-	console.log(clas);
-	console.log(section);
-	console.log(subject);
-	console.log(type);
-	console.log(total);
-	console.log(date);
-	return;
+	// console.log(clas);
+	// console.log(section);
+	// console.log(subject);
+	// console.log(type);
+	// console.log(total);
+	// console.log(date);
+	// return;
 
 	pool.getConnection(function(err,connection){
 

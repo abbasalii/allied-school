@@ -7,14 +7,30 @@ Google = new function(){
 	var challan = null;
 	var chalind = -1;
 	var cList = null;
+	var isPay = false;
 
 	this.setClassList = function(data){
 		cList = data;
+
+		var text = "";
+		for(var i=0; i<cList.length; i++)
+			text += "<option>" + cList[i].TITLE + "</option>";
+		$("#cList").html(text);
 	}
 
 	this.displayResult = function(data){
 
+		//clear previous result from user screen
+		$("#search-result-tab").html("");
+
+		//store search result locally
 		result = data;
+
+		if(data.length==0){
+
+			this.displayMessageBox("No record found!");
+			return;
+		}
 
 		var text = "<tr><th>INDEX</th><th>REG #</th><th>NAME</th><th>CLASS</th>"
 				 + "<th>SECTION</th><th>VIEW</th><th>RESULT</th><th>FEE</th></tr>";
@@ -66,11 +82,6 @@ Google = new function(){
 							$("#student-tuition").val(result[ind].TUITION);
 							$("#student-transport").val(result[ind].TRANSPORT);
 							$("#student-div").show();
-
-							// $("#get-result-btn").unbind("click");
-							// $("#get-result-btn").click(getResult);
-							// $("#get-fee-btn").unbind("click");
-							// $("#get-fee-btn").click(getFeeHistory);
 						}
 						else{
 							alert("404");
@@ -116,7 +127,14 @@ Google = new function(){
 
 	var displayTests = function(data){
 
+
 		tests = data;
+
+		if(data.length==0){
+			Google.displayMessageBox("No result found!");
+			return;
+		}
+
 		var sub = [];
 		var ass = [];
 
@@ -224,11 +242,12 @@ Google = new function(){
 			data : { id: result[ind].ID},
 			success: function(response){
 				if(response.code==200){
-					console.log(response.data);
+					// console.log(response.data);
 					displayChallans(response.data);
 				}
 				else{
 					alert("404");
+					Google.displayMessageBox("Could not retrieve fee history!");
 				}
 			}
 		});
@@ -274,10 +293,11 @@ Google = new function(){
 				success: function(response){
 					if(response.code==200){
 						// console.log(response.data);
-						alert("200");
+						// alert("200");
+						Google.displayMessageBox("Student information successfully updated");
 					}
 					else{
-						alert("404");
+						Google.displayMessageBox("Could not update student info");
 					}
 				}
 			});
@@ -296,6 +316,7 @@ Google = new function(){
 	var displayChallans = function(data){
 		challan = data;
 
+
 		var text = "<tr><th>INDEX</th><th>FOR</th><th>AMOUNT DUE</th><th>DUE DATE</th><th>STATUS</th><th>VIEW</th></tr>";
 
 		for(var i=0; i<data.length; i++){
@@ -308,7 +329,8 @@ Google = new function(){
 			text += "<tr>";
 
 			text += "<td>" + (i+1) + "</td>";
-			text += "<td>" + formatD(data[i].ST_MON)+" to "+ formatD(data[i].END_MON) + "</td>";
+			// text += "<td>" + formatD(data[i].ST_MON)+" to "+ formatD(data[i].END_MON) + "</td>";
+			text += "<td>" + convertToMonthRange(data[i]) + "</td>";
 			text += "<td>" + totalFee(data[i]) + "</td>";
 			text += "<td>" + formatD(data[i].DUE_DATE) + "</td>";
 			text += "<td>" + status + "</td>";
@@ -317,19 +339,42 @@ Google = new function(){
 			text += "</tr>";
 		}
 
-		$("#student-fee-tab").html(text);
+		if(data.length==0)
+			Google.displayMessageBox("No previous record exists!");
+		else
+			$("#student-fee-tab").html(text);
 		$("#student-fee-div").show();
 
 		$(".view-result-class").each(function(){
 			$(this).click(function(){
 				chalind = $(this).closest('tr').index() - 1;
+				// alert("index : "+chalind);
 				displayDetailChallan();
 			});
 		});
+
+		if(isPay){
+			isPay = false;
+			displayDetailChallan();
+		}
 	}
 
 	var formatD = function(date){
 		return new Date(date).toLocaleDateString();
+	}
+
+	var convertToMonthRange = function(data){
+
+		var st = new Date(data.ST_MON).getMonth();
+		var end = new Date(data.END_MON).getMonth();
+		var monthNames = ["January", "February", "March", "April", "May", "June",
+		  "July", "August", "September", "October", "November", "December"
+		];
+
+		if(st==end)
+			return monthNames[st];
+		else
+			return monthNames[st] + "-" +  monthNames[end];
 	}
 
 	var totalFee = function(data){
@@ -404,6 +449,10 @@ Google = new function(){
 			$("#payment-div").show();
 			$("#print-btn-div").hide();
 		}
+		else{
+			$("#payment-div").hide();
+			$("#print-btn-div").show();
+		}
 		$("#status").html(status);
 
 		$("#student-challan-div").show();
@@ -437,25 +486,69 @@ Google = new function(){
 	}
 
 	this.paymentSuccess = function(){
-		alert("done");
+		Google.displayMessageBox("Bill payed successfully");
+		isPay = true;
+		getFeeHistory();
 	}
 
 	this.showNewChallanForm = function(){
 		$("#new-challan-div").show();
 		$("#new-challan-student").val(result[ind].ID);
 	}
+
+	this.displayMessageBox = function(msg){
+
+		$("#user-message").html(msg);
+		$("#messagebox").show();
+	}
+
+	this.challanSuccess = function(){
+
+		Google.displayMessageBox("New Challan Issued");
+		getFeeHistory();
+		$("#new-challan-div").hide();
+	}
 }
 
 
 $(function(){
+
+	$.ajax({
+		url: "/get_classlist",
+		type: "get",
+		success: function(response){
+			if(response.code==200){
+				Google.setClassList(response.data);
+			}
+			else{
+				alert("404");
+			}
+		}
+	});
+
 	$('#form').submit(function(){
+
+		// var pkt = {};
+		// pkt.name = $("#search-student-by-name");
+		// if(pkt.name.length==0)
+		// 	pkt.name = null;
+		// pkt.reg_no = $("#search-student-by-reg");
+		// if(pkt.reg_no.length==0)
+		// 	pkt.reg_no = null;
+		// pkt.class = $("#search-student-by-class");
+		// if(pkt.class.length==0)
+		// 	pkt.class = null;
+		// pkt.section = $("#search-student-by-section");
+		// if(pkt.section.length==0)
+		// 	pkt.section = null;
+
 		$.ajax({
 			url: $('#form').attr('action'),
 			type: "post",
 			data : $('#form').serialize(),
 			success: function(response){
 				if(response.code==200){
-					// console.log(response.data);
+					console.log(response.data);
 					Google.setClassList(response.class);
 					Google.displayResult(response.data);
 				}
@@ -479,10 +572,10 @@ $(function(){
 			success: function(response){
 				if(response.code==200){
 					// console.log(response.data);
-					alert("200");
+					Google.challanSuccess();
 				}
 				else{
-					alert("404");
+					Google.displayMessageBox("Failed to issue new challan");
 				}
 			}
 		});
@@ -500,7 +593,7 @@ $(function(){
 					Google.paymentSuccess();
 				}
 				else{
-					alert("404");
+					Google.displayMessageBox("Failed to pay!");
 				}
 			}
 		});
@@ -529,5 +622,9 @@ $(function(){
 
 	$("#hide-new-challan-div").click(function(){
 		$("#new-challan-div").hide();
+	});
+
+	$("#hide-message-box").click(function(){
+		$("#messagebox").hide();
 	});
 });

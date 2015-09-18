@@ -21,9 +21,9 @@
 				<form id="search-form" action="/get_assessment" method="get">
 					<table id="search-filter-tab">
 						<tr>
-							<td><input class="search-field" id="search-class" type="text" name="class" placeholder="class" list="cList"/></td>
+							<td><input class="search-field" id="search-class" type="text" name="class" placeholder="Class" list="cList"/></td>
 							<td><input class="search-field" id="search-section" type="text" name="section" placeholder="Section"/></td>
-							<td><input class="search-field" id="search-subject" type="text" name="subject" placeholder="Subject"/></td>
+							<td><input class="search-field" id="search-subject" type="text" name="subject" placeholder="Subject" list="sList"/></td>
 						</tr>
 						<tr>
 							<td><input class="search-field" id="search-type" type="text" name="type" placeholder="Assessment"/></td>
@@ -37,7 +37,7 @@
 
 		<div id="result-div">
 			<div id="result-inner">
-				<div class="right"><input id="show-assessment-div" type="button" value="Add Assessment"></div>
+				<div class="right"><input id="show-assessment-div" type="image" src="/add-btn.png" width="64px" height="64px"></div>
 				<div><table id="search-result"></table></div>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 					<table id="add-ass-tab">
 						<tr>
 							<td class="input-label"><label for="assessment-class">Class</label></td>
-							<td><input class="input-field" id="assessment-class" type="text" name="class" placeholder="" required/></td>
+							<td><input class="input-field" id="assessment-class" type="text" name="class" placeholder="" list="cList" required/></td>
 						</tr>
 						<tr>
 							<td class="input-label"><label for="assessment-section">Section</label></td>
@@ -58,7 +58,7 @@
 						</tr>
 						<tr>
 							<td class="input-label"><label for="assessment-subject">Subject</label></td>
-							<td><input class="input-field" id="assessment-subject" type="text" name="subject" placeholder="" required/></td>
+							<td><input class="input-field" id="assessment-subject" type="text" name="subject" placeholder="" list="sList" required/></td>
 						</tr>
 						<tr>
 							<td class="input-label"><label for="assessment-name">Assessment</label></td>
@@ -66,7 +66,7 @@
 						</tr>
 						<tr>
 							<td class="input-label"><label for="assessment-total">Total Marks</label></td>
-							<td><input class="input-field" id="assessment-total" type="number" name="total" placeholder="" required/></td>
+							<td><input class="input-field" id="assessment-total" type="number" name="total" placeholder="" min="10" required/></td>
 						</tr>
 						<tr>
 							<td class="input-label"><label for="ass_date">Date</label></td>
@@ -81,14 +81,19 @@
 			</div>
 		</div>
 
-		<div id="marksheet-div">
-			<input id="hide-marksheet-div" class="dismiss-btn" type="button" value="X"/>
-			<div id="marksheet-inner">
+		<div id="marksheet-div" class="popup-container">
+			<div id="marksheet-inner" class="popup-inner">
+				<input id="hide-marksheet-div" class="dismiss-btn" type="button" value="X"/>
 				<table id="marksheet"></table>
 				<input id="update-marks" type='button' value='Update'/>
 			</div>
 		</div>
 	</div>
+	<div id="messagebox">
+		<span id="user-message">Dummy Message</span>
+		<input type="button" id="hide-message-box" value="OK" />
+	</div>
 	<datalist id="cList"></datalist>
+	<datalist id="sList"></datalist>
 </body>
 </html>

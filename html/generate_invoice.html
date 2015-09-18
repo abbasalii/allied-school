@@ -18,56 +18,63 @@
 	<div id="content">
 		<div id="container">
 			<div id="inner">
-				<table>
-					<tr>
-						<td colspan="2"><h2 class="sub-head">Generate Invoices</h2></td>
-					</tr>
-					<tr>
-						<td class="input-label">Class:</td>
-						<td id="audience"></td>
-					</tr>
-					<tr>
-						<td class="input-label"><label for="start-date">Starting Date:</label></td>
-						<td><input class="input-field" id="start-date" type="date"/></td>
-					</tr>
-					<tr>
-						<td class="input-label"><label for="end-date">Ending Date:</label></td>
-						<td><input class="input-field" id="end-date" type="date"/></td>
-					</tr>
-					<tr>
-						<td class="input-label"><label for="due-date">Due Date:</label></td>
-						<td><input class="input-field" id="due-date" type="date"/></td>
-					</tr>
-					<tr>
-						<td class="input-label">
-							<label for="add-annual">Annual Fee</label>
-							<input id="add-annual" type="checkbox"/>
-						</td>
-						<td><input class="input-field" id="annual-fee" type="number" disabled/></td>
-					</tr>
-					<tr>
-						<td class="input-label">
-							<label for="add-transport">Transport</label>
-							<input id="add-transport" type="checkbox"/>
-						</td>
-						<td><input class="input-field" id="transport" type="number" disabled/></td>
-					</tr>
-					<tr>
-						<td class="area-label-outer">
-							<span class="area-label-inner">
-								<label for="send-sms">Send SMS</label>
-								<input id="send-sms" type="checkbox"/>
-							</span>
-						</td>
-						<td><textarea class="input-area" id="sms-area" placeholder="Enter your message here..." disabled></textarea></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input class="input-button" id="generate-btn" type="button" value="Generate"/></td>
-					</tr>
-				</table>
+				<form action="/generate_invoice" id="form">
+					<table>
+						<tr>
+							<td colspan="2"><h2 class="sub-head">Generate Invoices</h2></td>
+						</tr>
+						<tr>
+							<td class="input-label">Class:</td>
+							<td id="audience"></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="start-date">Starting Date:</label></td>
+							<td><input class="input-field" id="start-date" type="date" required/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="end-date">Ending Date:</label></td>
+							<td><input class="input-field" id="end-date" type="date" required/></td>
+						</tr>
+						<tr>
+							<td class="input-label"><label for="due-date">Due Date:</label></td>
+							<td><input class="input-field" id="due-date" type="date" required/></td>
+						</tr>
+						<tr>
+							<td class="input-label">
+								<label for="add-annual">Annual Fee</label>
+								<input id="add-annual" type="checkbox"/>
+							</td>
+							<td><input class="input-field" id="annual-fee" type="number" disabled/></td>
+						</tr>
+						<tr>
+							<td class="input-label">
+								<label for="add-transport">Transport</label>
+								<input id="add-transport" type="checkbox"/>
+							</td>
+							<td><input class="input-field" id="transport" type="number" disabled/></td>
+						</tr>
+						<tr>
+							<td class="area-label-outer">
+								<span class="area-label-inner">
+									<label for="send-sms">Send SMS</label>
+									<input id="send-sms" type="checkbox"/>
+								</span>
+							</td>
+							<td><textarea class="input-area" id="sms-area" placeholder="Enter your message here..." disabled></textarea></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input class="input-button" id="generate-btn" type="submit" value="Generate"/></td>
+						</tr>
+					</table>
+				</form>
 			</div>
 		</div>
+	</div>
+	
+	<div id="messagebox">
+		<span id="user-message">Dummy Message</span>
+		<input type="button" id="hide-message-box" value="OK" />
 	</div>
 </body>
 </html>

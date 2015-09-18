@@ -1,4 +1,9 @@
 $(function(){
+
+	$("#hide-message-box").click(function(){
+		$("#messagebox").hide();
+	});
+
 	$('#form').submit(function(){
 		$.ajax({
 			url: $('#form').attr('action'),
@@ -6,15 +11,19 @@ $(function(){
 			data : $('#form').serialize(),
 			success: function(response){
 				if(response.code==200){
-					$("#messagebox").html("New student succesfully added");
-					$("#messagebox").show();
+					displayMessageBox("New student succesfully added");
 				}
 				else{
-					$("#messagebox").html("Failed to add new student!");
-					$("#messagebox").show();
+					displayMessageBox("Failed to add new student!");
 				}
 			}
 		});
 		return false;
 	});
+
+	displayMessageBox = function(msg){
+
+		$("#user-message").html(msg);
+		$("#messagebox").show();
+	}
 });

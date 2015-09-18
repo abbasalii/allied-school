@@ -32,10 +32,20 @@ Google = new function(){
 			}
 		});
 	}
+
+	this.displayMessageBox = function(msg){
+
+		$("#user-message").html(msg);
+		$("#messagebox").show();
+	}
 }
 
 
 $(function(){
+
+	$("#hide-message-box").click(function(){
+		$("#messagebox").hide();
+	});
 
 	$.ajax({
 		url: "/get_classlist",

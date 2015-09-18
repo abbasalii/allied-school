@@ -21,10 +21,10 @@
 				<form id="form" action="/search_student" method="post">
 					<table id="search-filter-tab">
 						<tr>
-							<td><input class="search-field" type="text" name="reg_no" placeholder="Registraion #"></td>
-							<td><input class="search-field" type="text" name="name" placeholder="Name"/></td>
-							<td><input class="search-field class-field" type="text" name="class" placeholder="Class"/></td>
-							<td><input class="search-field section-field" type="text" name="section" placeholder="Section"/></td>
+							<td><input class="search-field" id="search-student-by-reg" type="text" name="reg_no" placeholder="Registraion #"></td>
+							<td><input class="search-field" id="search-student-by-name" type="text" name="name" placeholder="Name"/></td>
+							<td><input class="search-field class-field" id="search-student-by-class" type="text" name="class" placeholder="Class" list="cList"/></td>
+							<td><input class="search-field section-field" id="search-student-by-section" type="text" name="section" placeholder="Section"/></td>
 							<td><input class="search-button" type="submit" value="Search"/></td>
 						</tr>
 					</table>
@@ -59,7 +59,7 @@
 					</tr>
 					<tr>
 						<td class="input-label"><label for="student-class">Class</label></td>
-						<td><input class="editable input-field" id="student-class" type="text" readonly/></td>
+						<td><input class="editable input-field" id="student-class" type="text" list="cList" readonly/></td>
 					</tr>
 					<tr>
 						<td class="input-label"><label for="student-section">Section</label></td>
@@ -120,11 +120,11 @@
 						<tr><h2 class="sub-head">Issue New Challan</h2></tr>
 						<tr>
 							<td class="input-label"><label for="new-st_mon">From</label></td>
-							<td><input class="input-field" id="new-st_mon" name="st_mon" type="date"/></td>
+							<td><input class="input-field" id="new-st_mon" name="st_mon" type="date" required/></td>
 						</tr>
 						<tr>
 							<td class="input-label"><label for="new-end_mon">To</label></td>
-							<td><input class="input-field" id="new-end_mon" name="end_mon" type="date"/></td>
+							<td><input class="input-field" id="new-end_mon" name="end_mon" type="date" required/></td>
 						</tr>
 						<tr>
 							<td class="input-label"><label for="new-ad_fee">Admission Fee</label></td>
@@ -152,7 +152,7 @@
 						</tr>
 						<tr>
 							<td class="input-label"><label for="new-due_date">Due Date</label></td>
-							<td><input class="input-field" id="new-due_date" name="due_date" type="date"/></td>
+							<td><input class="input-field" id="new-due_date" name="due_date" type="date" required/></td>
 						</tr>
 						<tr>
 							<td></td>
@@ -232,7 +232,7 @@
 						<table>
 							<tr>
 								<td><label for="enter-amount">Amount Paid:</label></td>
-								<td><input type="number" id="enter-amount" name="amount" required/></td>
+								<td><input type="number" id="enter-amount" name="amount" min="1" required/></td>
 							</tr>
 							<tr>
 								<td><label for="enter-date">Payment Date:</label></td>
@@ -249,9 +249,14 @@
 			</div>
 		</div>
 
-		<div id="print-view">
+		<!-- <div id="print-view">
 			
-		</div>
+		</div> -->
 	</div>
+	<div id="messagebox">
+		<span id="user-message">Dummy Message</span>
+		<input type="button" id="hide-message-box" value="OK" />
+	</div>
+	<datalist id="cList"></datalist>
 </body>
 </html>

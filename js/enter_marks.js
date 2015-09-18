@@ -4,6 +4,7 @@ Google = new function(){
 	var ass_id = -1;
 	var marksheet = null;
 	var cList = null;
+	var sList = null;
 
 	this.setClassDataList = function(data){
 
@@ -13,6 +14,42 @@ Google = new function(){
 		for(var i=0; i<cList.length; i++)
 			text += "<option>" + cList[i].TITLE + "</option>";
 		$("#cList").html(text);
+	}
+
+	this.setSubjectList = function(data){
+
+		sList = data;
+		var text = "";
+		for(var i=0; i<sList.length; i++)
+			text += "<option>" + sList[i].NAME + "</option>";
+		$("#sList").html(text);
+	}
+
+	this.submitSearchQuery = function(){
+
+		var obj = {};
+
+		var clas = $("#search-class").val().trim().toUpperCase();
+		obj['class'] = Google.findClassId(clas);
+		obj['section'] = $("#search-section").val().trim().toUpperCase();
+		obj['subject'] = $("#search-subject").val().trim().toUpperCase();
+		obj['type'] = $("#search-type").val().trim().toUpperCase();
+		obj['ass_date'] = $("#search-date").val();
+
+		$.ajax({
+			url: $('#search-form').attr('action'),
+			type: "get",
+			data : obj,
+			success: function(response){
+				if(response.code==200){
+					console.log(response.data);
+					Google.displaySearchResult(response.data);
+				}
+				else{
+					alert("404");
+				}
+			}
+		});
 	}
 
 	this.displaySearchResult = function(data){
@@ -117,10 +154,13 @@ Google = new function(){
 			data : {id:ass_id,marks:list},
 			success: function(response){
 				if(response.code==200){
-					alert("200");
+					// alert("200");
+					Google.displayMessageBox("Marks list successfully updated");
+					$("#add-assessment-div").hide();
 				}
 				else{
-					alert("404");
+					// alert("404");
+					Google.displayMessageBox("Failed to update marks list!");
 				}
 			}
 		});
@@ -133,6 +173,12 @@ Google = new function(){
 				return cList[i].ID;
 
 		return null;
+	}
+
+	this.displayMessageBox = function(msg){
+
+		$("#user-message").html(msg);
+		$("#messagebox").show();
 	}
 }
 
@@ -147,9 +193,30 @@ $(function(){
 				Google.setClassDataList(response.data);
 			}
 			else{
-				alert("404");
+				// alert("404");
+				console.log("Failed to retrieve classlist");
 			}
 		}
+	});
+
+	$.ajax({
+		url: "/get_subjectlist",
+		type: "get",
+		success: function(response){
+			if(response.code==200){
+				// console.log(response.data);
+				Google.setSubjectList(response.data);
+				
+			}
+			else{
+				// alert("404");
+				console.log("Failed to retrieve subjectlist");
+			}
+		}
+	});
+
+	$("#hide-message-box").click(function(){
+		$("#messagebox").hide();
 	});
 
 	$("#show-assessment-div").click(function(){
@@ -179,10 +246,13 @@ $(function(){
 			success: function(response){
 				if(response.code==200){
 					// console.log(response.data);
-					alert("200");
+					Google.submitSearchQuery();
+					// alert("200");
+					Google.displayMessageBox("New assessment created");
 				}
 				else{
-					alert("404");
+					// alert("404");
+					Google.displayMessageBox("Failed to created new assessment!");
 				}
 			}
 		});
@@ -191,31 +261,10 @@ $(function(){
 
 	$('#search-form').submit(function(){
 
-		var obj = {};
-
-		var clas = $("#search-class").val().trim().toUpperCase();
-		obj['class'] = Google.findClassId(clas);
-		obj['section'] = $("#search-section").val();
-		obj['subject'] = $("#search-subject").val();
-		obj['type'] = $("#search-type").val();
-		obj['ass_date'] = $("#search-date").val();
-
-		$.ajax({
-			url: $('#search-form').attr('action'),
-			type: "get",
-			data : obj,//$('#search-form').serialize(),
-			success: function(response){
-				if(response.code==200){
-					console.log(response.data);
-					Google.displaySearchResult(response.data);
-				}
-				else{
-					alert("404");
-				}
-			}
-		});
+		Google.submitSearchQuery();
 		return false;
 	});
+
 
 	$("#hide-marksheet-div").click(function(){
 		$("#marksheet-div").hide();
