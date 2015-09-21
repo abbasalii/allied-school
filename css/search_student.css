@@ -157,6 +157,11 @@
 	z-index: 4;
 }
 
+#student-challan-inner{
+	min-width: 352px;
+	position: relative;
+}
+
 #payment-div{
 	display: none;
 }
@@ -165,18 +170,20 @@
 	display: none;
 }
 
-#print-view{
-/*	position: absolute;
-	top: 0;
-	left: 0;
-	background-color: #fff;
-	z-index: 0;
-	width: 100%;
-	height: 100%;*/
+#print-btn{
+	margin: 8px;
 }
 
+#background-logo{
+	display: none;
+}
 
 @media print{
+
+	body{
+		background: #fff;
+	}
+
 	#student-challan-div{
 		position: absolute;
 		top:0;
@@ -184,7 +191,7 @@
 		background-color: #fff;
 		z-index: 4;
 		width: 100%;
-		height: 100%;
+		min-height: 100%;
 		overflow: visible;
 	}
 
@@ -192,8 +199,21 @@
 		display: none;
 	}
 
-	#print-btn-div{
+	#print-btn{
 		display: none;
+	}
+
+	#header-image{
+		display: none;
+	}
+
+	#background-logo{
+		display: block;
+		position: absolute;
+		top: 156px;
+		left: 81px;
+		width: 256px;
+		opacity: 0.15;
 	}
 }
 
@@ -221,4 +241,26 @@
 #search-result-tab td{
 	border: 1px solid #98DAF1;
 	padding: 8px;
+}
+
+.student-challan-table{
+	width: 100%;
+}
+
+.student-challan-table td{
+	text-align: left;
+	padding: 8px;
+	border-bottom: 1px solid #29ABE2;
+}
+
+.paid-rows{
+	display: none;
+}
+
+.due-rows{
+	display: none;
+}
+
+#border-less td{
+	border-bottom: none;
 }

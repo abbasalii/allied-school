@@ -165,67 +165,93 @@
 
 		<div id="student-challan-div" class="popup-container">
 			<div id="student-challan-inner" class="popup-inner">
+				<img src="logo.png" alt="Logo" id="background-logo"/>
 				<input id="hide-challan-div" class="dismiss-btn" type="button" value="X"/>
-				<table>
-					<tr>
-						<td>Fee For: </td>
-						<td><span id="fee-for"></span></td>
-					</tr>
-					<tr>
-						<td>Admission Fee: </td>
-						<td><span id="admission"></span></td>
-					</tr>
-					<tr>
-						<td>Tuition Fee: </td>
-						<td><span id="tution"></span></td>
-					</tr>
-					<tr>
-						<td>Security: </td>
-						<td><span id="security"></span></td>
-					</tr>
-					<tr>
-						<td>Annual Fee: </td>
-						<td><span id="annual"></span></td>
-					</tr>
-					<tr>
-						<td>Process Fee: </td>
-						<td><span id="process"></span></td>
-					</tr>
-					<tr>
-						<td>Fine: </td>
-						<td><span id="fine"></span></td>
-					</tr>
-					<tr>
-						<td>Transport: </td>
-						<td><span id="transport"></span></td>
-					</tr>
-					<tr>
-						<td>Amount Due: </td>
-						<td><span id="amount-due"></span></td>
-					</tr>
-					<tr>
-						<td>Issue Date: </td>
-						<td><span id="issue-date"></span></td>
-					</tr>
-					<tr>
-						<td>Due Date: </td>
-						<td><span id="due-date"></span></td>
-					</tr>
-					<tr>
-						<td>Pay Date: </td>
-						<td><span id="pay-date"></span></td>
-					</tr>
-					<tr>
-						<td>Amount Paid: </td>
-						<td><span id="amount-paid"></span></td>
-					</tr>
-					<tr>
-						<td>Status: </td>
-						<td><span id="status"></span></td>
-					</tr>
-				</table>
+				<form id="payment-form" action="/pay_invoice" method="post">
+					<input type="number" id="invoice-id" name="id"/>
+					<table class="student-challan-table">
+						<tr>
+							<td class="bold">Name: </td>
+							<td><span id="std-name-chal"></span></td>
+						</tr>
+						<!-- <tr class="line"><td colspan="2"></hr></td></tr> -->
+						<tr>
+							<td class="bold">Class: </td>
+							<td><span id="std-clas-chal"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Fee For: </td>
+							<td><span id="fee-for"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Admission Fee: </td>
+							<td><span id="admission"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Tuition Fee: </td>
+							<td><span id="tution"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Security: </td>
+							<td><span id="security"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Annual Fee: </td>
+							<td><span id="annual"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Process Fee: </td>
+							<td><span id="process"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Fine: </td>
+							<td><span id="fine"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Transport: </td>
+							<td><span id="transport"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Amount Due: </td>
+							<td><span id="amount-due"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Issue Date: </td>
+							<td><span id="issue-date"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Due Date: </td>
+							<td><span id="due-date"></span></td>
+						</tr>
+						<tr class="paid-rows">
+							<td class="bold">Pay Date: </td>
+							<td><span id="pay-date"></span></td>
+						</tr>
+						<tr class="paid-rows">
+							<td class="bold">Amount Paid: </td>
+							<td><span id="amount-paid"></span></td>
+						</tr>
+						<tr>
+							<td class="bold">Status: </td>
+							<td><span id="status"></span></td>
+						</tr>
+						<tr class="due-rows">
+							<td class="bold">Amount Paid: </td>
+							<td><input class="input-default" type="number" id="enter-amount" name="amount" min="1" required/></td>
+						</tr>
+						<tr class="due-rows">
+							<td class="bold">Payment Date: </td>
+							<td><input class="input-default" type="date" id="enter-date" name="date" required/></td>
+						</tr>
+						<tr class="due-rows" id="border-less">
+							<td></td>
+							<td><input class="btn-default" type="submit" id="pay-btn" value="Pay Fee"/></td>
+						</tr>
+					</table>
+					<input class="btn-default" id="print-btn" type="button" value="Print"/>
+				</form>
 				
-				<div id="payment-div">
+<!-- 				<div id="payment-div">
 					<form id="payment-form" action="/pay_invoice" method="post">
 						<input type="number" id="invoice-id" name="id"/>
 
@@ -244,8 +270,8 @@
 							</tr>
 						</table>
 					</form>
-				</div>
-				<div id="print-btn-div"><input id="print-btn" type="button" value="Print"/></div>
+				</div> -->
+				<!-- <div id="print-btn-div"><input id="print-btn" type="button" value="Print"/></div> -->
 			</div>
 		</div>
 

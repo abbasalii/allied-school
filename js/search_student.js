@@ -1,5 +1,8 @@
 Google = new function(){
 
+	var UNPAID = 0;
+	var PAID = 2;
+
 	var result = null;
 	var ind = -1;
 	var parent = null;
@@ -397,34 +400,25 @@ Google = new function(){
 
 	var displayDetailChallan = function(){
 
+		$("#std-name-chal").html(result[ind].NAME);
+		for(var j=0; j<cList.length; j++){
+			if(cList[j].ID==result[ind].CLASS){
+				$("#std-clas-chal").html(cList[j].TITLE);
+			}
+		}
+
 		var fee = challan[chalind];
-		$("#fee-for").html(formatD(fee.ST_MON)+" to "+formatD(fee.END_MON));
-		var money = fee.ADMISSION_FEE;
-		if(money==null || money==0)
-			money = "None";
-		$("#admission").html(money);
+		$("#fee-for").html(convertToMonthRange(fee));
+		$("#admission").html(toNone(fee.ADMISSION_FEE));
+		$("#tution").html(toNone(fee.TUTION_FEE));
+		$("#security").html(toNone(fee.SECURITY));
+		$("#annual").html(toNone(fee.ANNUAL_FEE));
+		$("#process").html(toNone(fee.PROCESS_FEE));
+		$("#transport").html(toNone(fee.TRANSPORT));
 
-		var money = fee.TUTION_FEE;
-		if(money==null || money==0)
-			money = "None";
-		$("#tution").html(money);
-
-		var money = fee.SECURITY;
-		if(money==null || money==0)
-			money = "None";
-		$("#security").html(money);
-
-		var money = fee.ANNUAL_FEE;
-		if(money==null || money==0)
-			money = "None";
-		$("#annual").html(money);
-
-		var money = fee.TRANSPORT;
-		if(money==null || money==0)
-			money = "None";
-		$("#transport").html(money);
-
-		var money = calculateFine(fee);
+		var money = 0;
+		if(fee.STATUS==UNPAID)
+			money = calculateFine(fee);
 		var world = money;
 		if(money==null || money==0)
 			world = "None";
@@ -440,22 +434,44 @@ Google = new function(){
 		$("#pay-date").html(formatD(fee.PAY_DATE));
 		$("#amount-paid").html(fee.AMOUNT_PAID);
 
-		var status="PAID";
-		if(fee.STATUS==0){
-			status = "UNPAID";
+		$("#invoice-id").val(fee.ID);
+		$("#enter-date").val(getToday());
 
-			$("#invoice-id").val(fee.ID);
-			$("#enter-date").val(getToday());
-			$("#payment-div").show();
-			$("#print-btn-div").hide();
+		var status;
+		if(fee.STATUS==UNPAID){
+			status = "UNPAID";
+			$(".paid-rows").each(function(){
+				$(this).hide();
+			});
+
+			$(".due-rows").each(function(){
+				$(this).show();
+			});
+
+			$("#print-btn").hide();
 		}
 		else{
-			$("#payment-div").hide();
-			$("#print-btn-div").show();
+			status="PAID";
+			$(".paid-rows").each(function(){
+				$(this).show();
+			});
+
+			$(".due-rows").each(function(){
+				$(this).hide();
+			});
+
+			$("#print-btn").show();
 		}
 		$("#status").html(status);
 
 		$("#student-challan-div").show();
+	}
+
+	var toNone = function(number){
+
+		if(isNaN(number) || number==undefined || number==null || number==0)
+			return "None";
+		return number;
 	}
 
 	var calculateFine = function(data){
@@ -600,7 +616,7 @@ $(function(){
 		return false;
 	});
 
-	$("#print-btn-div").click(function(){
+	$("#print-btn").click(function(){
 		window.print();
 	});
 
