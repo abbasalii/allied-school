@@ -38,6 +38,64 @@ Google = new function(){
 		$("#user-message").html(msg);
 		$("#messagebox").show();
 	}
+
+	this.sendNotification = function(){
+
+		var i = 0;
+		var cList = [];
+		var obj = {};
+		$(".sub-check").each(function(){
+			if($(this).prop('checked'))
+				cList.push(subjects[i].ID);
+			i++;
+		});
+		if(cList.length==0)
+		{
+			this.displayMessageBox("No class is selected!");
+			return;			
+		}
+		var msg = $("#sms-area").val().trim();
+		if(msg.length==0)
+		{
+			this.displayMessageBox("Message field is empty!");
+			return;			
+		}
+		obj['list'] = cList;
+		obj['msg'] = msg;
+
+		$.ajax({
+			url: "/send_sms",
+			type: "post",
+			data : obj,//$('#form').serialize(),
+			success: function(response){
+				if(response.code==200){
+
+					$("#suball").prop('checked', false);
+					$(".sub-check").each(function(){
+						$(this).prop('checked', false);
+					});
+					$("#sms-area").val("");
+
+					var obj = JSON.parse(response.data);
+					console.log(obj["return"]);
+					if(obj["return"]==true) {
+						var noOfMsg = response.num;
+						var msgLeft = obj["remaining_quota"];
+						if(msgLeft>noOfMsg-1)
+							Google.displayMessageBox("Sending SMS...Please don't turn off the system for few seconds");
+						else
+							Google.displayMessageBox("Your SMS package has been consumed. Please resubscribe");
+					}
+					else{
+						Google.displayMessageBox(obj["response_message"]);
+					}
+				}
+				else{
+					Google.displayMessageBox("Sending failed! Please check your internet connection");
+				}
+			}
+		});
+	}
 }
 
 
@@ -52,7 +110,7 @@ $(function(){
 		type: "get",
 		success: function(response){
 			if(response.code==200){
-				console.log(response.data);
+				// console.log(response.data);
 				Google.displaySubjects(response.data);
 			}
 			else{
@@ -62,6 +120,6 @@ $(function(){
 	});	
 
 	$("#send-btn").click(function(){
-		alert("Send");
+		Google.sendNotification();
 	});
 });

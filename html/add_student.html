@@ -7,12 +7,13 @@
 	<link rel="stylesheet" type="text/css" href="default.css">
 	<link rel="stylesheet" type="text/css" href="add_student.css">
 	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="default.js"></script>
 	<script type="text/javascript" src="add_student.js"></script>
 </head>
 <body>
 
 	<div id="header">
-		<img id="header-image" src="/header.png" />
+		<img id="header-image" src="/header.png"/>
 		<h1 id="header-title">Allied School Bosan Road Campus, Multan</h1>
 		<a id="logout-btn" href="/logout">Logout</a>
 	</div>
@@ -39,7 +40,7 @@
 						</tr>
 						<tr>
 							<td class="input-label"><label for="class">Class: </label></td>
-							<td><input class="input-field" type="text" id="class" name="class" placeholder="" required/></td>
+							<td><input class="input-field" type="text" id="class" name="class" placeholder="" list="cList" required/></td>
 						</tr>
 						<tr>
 							<td class="input-label"><label for="section">Section: </label></td>
@@ -79,8 +80,14 @@
 		</div>
 	</div>
 	<div id="messagebox">
-		<span id="user-message">Dummy Message</span>
-		<input type="button" id="hide-message-box" value="OK" />
+		<div id="messagebox-inner">
+			<div id="messagebox-core">
+				<div id="user-message">Dummy Message</div>
+				<input class="input-button" type="button" id="hide-message-box" value="OK" />
+			</div>
+		</div>
 	</div>
+	<div id="footer"></div>
+	<datalist id="cList"></datalist>
 </body>
 </html>

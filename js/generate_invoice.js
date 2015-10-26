@@ -73,6 +73,18 @@ Google = new function(){
 		});		
 	}
 
+	this.getSelected = function(){
+
+		var i = 0;
+		var list = [];
+		$(".sub-check").each(function(){
+			if($(this).prop('checked'))
+				list.push(classes[i].ID);
+			i++;
+		});
+		return list;
+	}
+
 	this.displayMessageBox = function(msg){
 
 		$("#user-message").html(msg);
@@ -92,11 +104,11 @@ $(function(){
 		type: "get",
 		success: function(response){
 			if(response.code==200){
-				console.log(response.data);
+				// console.log(response.data);
 				Google.displayClassList(response.data);
 			}
 			else{
-				alert("404");
+				Google.displayMessageBox("Error getting class list!");
 			}
 		}
 	});
@@ -105,23 +117,25 @@ $(function(){
 
 		if($(this).is(':checked')){
 
+			$("#sms-area").val("Dear Parent/Guardian,\nThe fee of this month is due. Kindly pay it within due date. Thanks.");
 			$("#sms-area").prop("disabled",false);
+			$("#sms-area").prop("required",true);
 		}
 		else{
+			$("#sms-area").val("");
 			$("#sms-area").prop("disabled",true);
+			$("#sms-area").prop("required",false);
 		}
 	});
 
 	$('#form').submit(function(){
 
-		var i = 0;
-		var list = [];
-		$(".sub-check").each(function(){
+		var list = Google.getSelected();
 
-			if($(this).prop('checked'))
-				list.push(classes[i].CLASS);
-			i++;
-		});
+		if(list.length==0){
+			Google.displayMessageBox("No class selected!");
+			return false;
+		}
 
 		var object = {};
 		object.list = list;
@@ -130,6 +144,7 @@ $(function(){
 		object.due_date = $("#due-date").val();
 		object.annual = $("#annual-fee").val();
 		object.transport = $("#transport").val();
+		object.msg = $("#sms-area").val();
 
 		$.ajax({
 			url: $('#form').attr('action'),
@@ -151,10 +166,14 @@ $(function(){
 
 		if($(this).is(':checked')){
 
+			$("#annual-fee").val(2000);
 			$("#annual-fee").prop("disabled",false);
+			$("#annual-fee").prop("required",true);
 		}
 		else{
+			$("#annual-fee").val("");
 			$("#annual-fee").prop("disabled",true);
+			$("#annual-fee").prop("required",false);
 		}
 	});
 
@@ -163,9 +182,11 @@ $(function(){
 		if($(this).is(':checked')){
 
 			$("#transport").prop("disabled",false);
+			$("#transport").prop("required",true);
 		}
 		else{
 			$("#transport").prop("disabled",true);
+			$("#transport").prop("required",false);
 		}
 	});
 

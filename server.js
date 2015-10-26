@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var rand = require('random-key');
+var request = require("request");
 var app = express();
 var pool 	=    mysql.createPool({
     connectionLimit : 10,
@@ -187,6 +188,31 @@ app.post('/add_student',function(req,res){
 		// 	console.log("Error occurred while performing database operation");
 		// 	res.json({"code":500});
   //       });
+	});
+});
+
+app.get('/get_cnic_info',function(req,res){
+
+	var cnic = req.query.id;
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = "SELECT NAME, ADDRESS, PHONE FROM PARENT WHERE CNIC = '" + cnic + "'";
+		connection.query(query,function(err,rows,fields){
+
+			connection.release();
+			if(err){
+				console.log("Error getting cnic info");
+				res.json({"code":400});
+			}
+			else{
+				res.json({"code":200, "data":rows});
+			}
+		});
 	});
 });
 
@@ -560,10 +586,23 @@ app.post('/generate_invoice',function(req,res){
 	var due_date = req.body.due_date;
 	var annual = req.body.annual;
 	var transport = req.body.transport;
+	var msg = req.body.msg;
 
 	var day = 24*60*60*1000;
 	var temp = 1 + (new Date(end_date).getTime() - new Date(st_date).getTime())/day;
 	var factor = parseInt(temp/28);
+
+	var options = {
+	    url: 'http://smartlync.pk/api',
+	    method: 'GET',
+	    qs: {
+	    	transaction_id: "",
+	    	to: "",
+	    	text: "",
+	    	api_key: "23a03108ea4a7965f672e25b6b68ebb",//add 'b' in the end
+	    	api_secret: "90397d831"
+	    }
+	};
 
 	pool.getConnection(function(err,connection){
 
@@ -589,7 +628,15 @@ app.post('/generate_invoice',function(req,res){
 					query = 'INSERT INTO CHALLAN (STD_ID, ST_MON, END_MON, TUTION_FEE, ANNUAL_FEE'
 						  + ', TRANSPORT, ISSUE_DATE, DUE_DATE) VALUES (?,?,?,?,?,?,CURDATE(),?)';
 
-					var values = [rows[0].ID, st_date,end_date,rows[0].TUITION*factor, annual, rows[0].TRANSPORT, due_date];
+					if(transport!=null && transport!=undefined && transport!=0)
+						transport = 0;
+					else
+						transport = rows[0].TRANSPORT;
+
+					if(annual!=null && annual!=undefined)
+						annual = 0;
+
+					var values = [rows[0].ID, st_date,end_date,rows[0].TUITION*factor, annual, transport, due_date];
 
 					for(var i=1; i<rows.length; i++){
 						query += ',(?,?,?,?,?,?,CURDATE(),?)';
@@ -598,19 +645,56 @@ app.post('/generate_invoice',function(req,res){
 						values.push(end_date);
 						values.push(rows[i].TUITION*factor);
 						values.push(annual);
-						values.push(rows[0].TRANSPORT);
+						if(transport!=null && transport!=undefined && transport!=0)
+							transport = 0;
+						else
+							transport = rows[i].TRANSPORT;
+						values.push(transport);
 						values.push(due_date);
 					}
 
 					connection.query(query, values,
 						function(err,rows,fields) {
 
-							connection.release();
 							if(err){
+								connection.release();
 								console.log("Failed to generate new challan");
 								res.json({"code":500});
 							}
+							else if(msg!=null && msg!=undefined && msg.length!=0){
+								
+								values = [list[0]];
+								query = 'SELECT DISTINCT PHONE FROM STUDENT, PARENT WHERE'
+										  + ' STUDENT.P_ID=PARENT.ID AND (STUDENT.CLASS = ?';
+								for(var i=1; i<list.length; i++)
+								{
+									query += ' OR STUDENT.CLASS = ?';
+									values.push(list[i]);
+								}
+								query += ')';
+
+								connection.query(query,values,function(err,rows,fields) {
+
+									connection.release();
+									if(err){
+										console.log("Error selecting phone numbers");
+									}
+									else{
+										for(var i=0; i<rows.length; i++) {
+
+											options['qs']['transaction_id'] = rand.generate(64);
+											options['qs']['to'] = rows[i].PHONE;
+											options['qs']['text'] = msg;
+											request(options,function(error, response, body) {
+												console.log(body);
+											});
+										}
+									}
+								});
+								res.json({"code":200});
+							}
 							else{
+								connection.release();
 								res.json({"code":200});
 							}
 						}
@@ -646,6 +730,80 @@ app.get('/send_sms',function(req, res){
 	else{
 		res.redirect('/login');
 	}
+});
+
+app.post('/send_sms',function(req,res){
+
+	var msg = req.body.msg;
+	var list = req.body.list;
+
+	var options = {
+	    url: 'http://smartlync.pk/api',
+	    method: 'GET',
+	    qs: {
+	    	transaction_id: "",
+	    	to: "",
+	    	text: "",
+	    	api_key: "23a03108ea4a7965f672e25b6b68ebb",//add 'b' in the end
+	    	api_secret: "90397d831"
+	    }
+	};
+
+	var isFirst = true;
+	var noOfMsg = 0;
+
+	var callback = function(error, response, body) {
+		console.log(body);
+		if(error){
+			isFirst = false;
+			res.json({"code":404});
+		}
+		if(isFirst){
+			isFirst = false;
+			res.json({"code":200,"data":body, "num":noOfMsg});
+		}
+		isFirst = false;
+	}
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var values = [list[0]];
+		var query = 'SELECT DISTINCT PHONE FROM STUDENT, PARENT WHERE'
+				  + ' STUDENT.P_ID=PARENT.ID AND (STUDENT.CLASS = ?';
+		for(var i=1; i<list.length; i++)
+		{
+			query += ' OR STUDENT.CLASS = ?';
+			values.push(list[i]);
+		}
+		query += ')';
+
+		connection.query(query, values,
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to get phone numbers!");
+					res.json({"code":500});
+				}
+				else{
+					noOfMsg = rows.length;
+					for(var i=0; i<rows.length; i++) {
+
+						options['qs']['transaction_id'] = rand.generate(64);
+						options['qs']['to'] = rows[i].PHONE;
+						options['qs']['text'] = msg;
+						request(options,callback);
+					}
+				}
+			}
+
+		);
+	});
 });
 
 app.get('/get_classlist',function(req, res){

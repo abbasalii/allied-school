@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="default.css">
 	<link rel="stylesheet" type="text/css" href="generate_invoice.css">
 	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="default.js"></script>
 	<script type="text/javascript" src="generate_invoice.js"></script>
 </head>
 <body>
@@ -72,9 +73,15 @@
 		</div>
 	</div>
 	
+	
 	<div id="messagebox">
-		<span id="user-message">Dummy Message</span>
-		<input type="button" id="hide-message-box" value="OK" />
+		<div id="messagebox-inner">
+			<div id="messagebox-core">
+				<div id="user-message">Dummy Message</div>
+				<input class="input-button" type="button" id="hide-message-box" value="OK" />
+			</div>
+		</div>
 	</div>
+	<div id="footer"></div>
 </body>
 </html>

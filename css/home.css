@@ -48,3 +48,8 @@
 	cursor: pointer;
 	border-color: #81828E
 }
+
+#cancel-promotion{
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
