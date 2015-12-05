@@ -2,6 +2,12 @@ $(function(){
 
 	var cList = null;
 
+	Verifier.init("dobDay", "dobMon", "dobYear");
+
+	$("#testBtn").click(function(){
+		alert($("#dob").val());
+	});
+
 	$.ajax({
 		url: "/get_classlist",
 		type: "get",
@@ -51,7 +57,13 @@ $(function(){
 		var obj = {};
 		obj['name'] = $("#name").val();
 		obj['reg_no'] = $("#reg_no").val();
-		obj['dob'] = $("#dob").val();
+		if(!Verifier.isValid())
+		{
+			// displayMessageBox("Date of Birth is not valid!");
+			// return false;
+		}
+		else
+			obj['dob'] = Verifier.getDate();
 		var temp = $("#class").val().trim().toUpperCase();
 		for(var i=0; i<cList.length; i++)
 		{
@@ -63,9 +75,9 @@ $(function(){
 		}
 		if(obj['class']==undefined)
 		{
-			$("#class").focus();
-			displayMessageBox("Select valid class!");
-			return false;			
+			// $("#class").focus();
+			// displayMessageBox("Select valid class!");
+			// return false;
 		}
 		obj['section'] = $("#section").val();
 		obj['address'] = $("#address").val();
@@ -75,17 +87,41 @@ $(function(){
 		obj['tution'] = $("#tution").val();
 		obj['transport'] = $("#transport").val();
 
+
 		$.ajax({
 			url: $('#form').attr('action'),
 			type: "post",
 			data : obj,//$('#form').serialize(),
 			success: function(response){
-				if(response.code==200){
-					displayMessageBox("New student succesfully added");
+				switch(response.code)
+				{
+					case 200:
+						displayMessageBox("New student succesfully added");
+						$("#name").val("");
+						$("#reg_no").val("");
+						$("#address").val("");
+						$("#phone").val("");
+						$("#fname").val("");
+						$("#cnic").val("");
+						$("#transport").val("");
+						break;
+
+					default:
+						displayMessageBox("Failed to add new student!");
 				}
-				else{
-					displayMessageBox("Failed to add new student!");
-				}
+				// if(response.code==200){
+				// 	displayMessageBox("New student succesfully added");
+				// 	$("#name").val("");
+				// 	$("#reg_no").val("");
+				// 	$("#address").val("");
+				// 	$("#phone").val("");
+				// 	$("#fname").val("");
+				// 	$("#cnic").val("");
+				// 	$("#transport").val("");
+				// }
+				// else{
+				// 	displayMessageBox("Failed to add new student!");
+				// }
 			}
 		});
 		return false;

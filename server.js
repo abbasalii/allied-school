@@ -1,3 +1,4 @@
+// var PORT = process.env.PORT;
 var PORT = 8080;
 
 var mysql 	= require('mysql');
@@ -26,6 +27,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('js'));
 app.use(express.static('css'));
 app.use(express.static('img'));
+app.use(express.static('html'));
+
+app.get('/',function(req, res){
+
+	res.redirect('/login');
+});
 
 app.get('/home',function(req, res){
 
@@ -116,6 +123,8 @@ app.post('/add_student',function(req,res){
 	var fname = req.body.fname;
 	var cnic = req.body.cnic;
 	var tuition = req.body.tution;
+	if(isNaN(tuition) || tuition==undefined || tuition<=0)
+		tuition = 2420;
 	var transport = req.body.transport;
 
 	pool.getConnection(function(err,connection){
@@ -125,7 +134,7 @@ app.post('/add_student',function(req,res){
 			res.json({"code":500});
 		}
 
-		var query = 'SELECT * FROM PARENT WHERE CNIC=?';
+		var query = 'SELECT * FROM PARENT WHERE CNIC=? AND LENGTH(CNIC)>0 AND CNIC IS NOT NULL';
 		connection.query(query, [cnic],
 			function(err,rows,fields) {
 
@@ -394,6 +403,35 @@ app.post('/update_student_info',function(req,res){
 		// 	console.log("Error occurred while performing database operation");
 		// 	res.json({"code":500});
   //       });
+	});
+});
+
+app.post('/delete_student_info',function(req,res){
+
+	var id = req.body.STD_ID;
+
+	pool.getConnection(function(err,connection){
+
+		if (err) {
+			console.log("Failed to connect to the database");
+			res.json({"code":500});
+		}
+
+		var query = 'DELETE FROM STUDENT WHERE ID=?';
+
+		connection.query(query, [id],
+			function(err,rows,fields) {
+
+				connection.release();
+				if(err){
+					console.log("Failed to delete student!");
+					res.json({"code":500});
+				}
+				else{
+					res.json({"code":200});
+				}
+			}
+		);
 	});
 });
 

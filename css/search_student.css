@@ -264,3 +264,9 @@
 #border-less td{
 	border-bottom: none;
 }
+
+#del-std-btn{
+	background-color: #FF0000;
+    border: 2px solid #FF0000;
+    display: none;
+}

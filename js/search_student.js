@@ -42,12 +42,16 @@ Google = new function(){
 			text += "<td class='center'><span>" + (i+1) + "</span></td>";
 			text += "<td><span>" + data[i].REG_NO + "</span></td>";
 			text += "<td><span>" + data[i].NAME + "</span></td>";
+			var isClass = false;
 			for(var j=0; j<cList.length; j++){
 				if(cList[j].ID==data[i].CLASS){
 					text += "<td><span>" + cList[j].TITLE + "</span></td>";
+					isClass = true;
 					break;
 				}
 			}
+			if(isClass==false)
+				text += "<td><span></span></td>";
 			text += "<td class='center'><span>" + data[i].SECTION + "</span></td>";
 			text += "<td>" + "<input class='table-btn detail-btn-class' type='button' value='Info'/>" + "</td>";
 			text += "<td>" + "<input class='table-btn result-btn-class' type='button' value='Result'/>" + "</td>";
@@ -69,8 +73,13 @@ Google = new function(){
 						if(response.code==200){
 							parent = response.data[0];
 							$("#student-name").val(result[ind].NAME);
-							$("#student-dob").val(toInputFormat(new Date(result[ind].DOB)));
+							if(result[ind].DOB==null)
+								$("#student-dob").val("");
+							else
+								$("#student-dob").val(toInputFormat(new Date(result[ind].DOB)));
 							$("#student-reg").val(result[ind].REG_NO);
+
+							$("#student-class").val("");
 							for(var j=0; j<cList.length; j++){
 								if(cList[j].ID==result[ind].CLASS){
 									$("#student-class").val(cList[j].TITLE);
@@ -265,6 +274,34 @@ Google = new function(){
 
 		$("#edit-std-btn").unbind("click");
 		$("#edit-std-btn").val("Save Changes");
+		$("#del-std-btn").show();
+		$("#del-std-btn").click(function(){
+
+				if (confirm('Do you want to delete this student?')) {
+
+					var object = {};
+					object['STD_ID'] = result[ind].ID;
+					$.ajax({
+						url: "/delete_student_info",
+						type: "post",
+						data : object,
+						success: function(response){
+							if(response.code==200){
+								// console.log(response.data);
+								// alert("200");
+								Google.displayMessageBox("Student is successfully deleted");
+								$("#student-div").hide();
+								$("#search-result-tab").html("");
+							}
+							else{
+								Google.displayMessageBox("Could not delete student record");
+							}
+						}
+					});
+				}
+				else
+					return false;
+		});
 		$("#edit-std-btn").click(function(){
 
 			var object = {};

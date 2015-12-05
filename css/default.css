@@ -243,3 +243,11 @@ body{
 	margin-top: 16px;
 	margin-bottom: 8px;
 }
+
+.two-digit{
+	width: 48px;
+}
+
+.four-digit{
+	width: 76px;
+}
