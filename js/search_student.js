@@ -35,12 +35,13 @@ Google = new function(){
 			return;
 		}
 
-		var text = "<tr><th>INDEX</th><th>REG #</th><th>NAME</th><th>CLASS</th>"
-				 + "<th>SECTION</th><th>VIEW</th><th>RESULT</th><th>FEE</th></tr>";
+		var text = "<tr><th>INDEX</th><th class='hide'>REG #</th><th>NAME</th><th>CLASS</th>"
+				 + "<th>SECTION</th><th>PARENT'S NAME</th><th>PHONE #</th><th>AMOUNT</th>"
+				 + "<th class='hide'>VIEW</th><th class='hide'>RESULT</th><th class='hide'>FEE</th></tr>";
 		for(var i=0; i<data.length; i++){
 			text += "<tr>";
 			text += "<td class='center'><span>" + (i+1) + "</span></td>";
-			text += "<td><span>" + data[i].REG_NO + "</span></td>";
+			text += "<td class='hide'><span>" + data[i].REG_NO + "</span></td>";
 			text += "<td><span>" + data[i].NAME + "</span></td>";
 			var isClass = false;
 			for(var j=0; j<cList.length; j++){
@@ -53,9 +54,12 @@ Google = new function(){
 			if(isClass==false)
 				text += "<td><span></span></td>";
 			text += "<td class='center'><span>" + data[i].SECTION + "</span></td>";
-			text += "<td>" + "<input class='table-btn detail-btn-class' type='button' value='Info'/>" + "</td>";
-			text += "<td>" + "<input class='table-btn result-btn-class' type='button' value='Result'/>" + "</td>";
-			text += "<td>" + "<input class='table-btn fee-btn-class' type='button' value='Fee'/>" + "</td>";
+			text += "<td><span>" + data[i].PARENT + "</span></td>";
+			text += "<td><span>" + data[i].PHONE + "</span></td>";
+			text += "<td><span>" + data[i].TUITION + "/-</span></td>";
+			text += "<td class='hide'>" + "<input class='table-btn detail-btn-class' type='button' value='Info'/>" + "</td>";
+			text += "<td class='hide'>" + "<input class='table-btn result-btn-class' type='button' value='Result'/>" + "</td>";
+			text += "<td class='hide'>" + "<input class='table-btn fee-btn-class' type='button' value='Fee'/>" + "</td>";
 			text += "</tr>";
 		}
 

@@ -252,22 +252,32 @@ app.post('/search_student',function(req,res){
 		var query;
 		var values = [];
 		if(reg_no){
-			query = 'SELECT * FROM STUDENT WHERE REG_NO = ?';
+			query = 'SELECT STUDENT.NAME, STUDENT.REG_NO, STUDENT.CLASS,'
+					+' STUDENT.SECTION, STUDENT.TUITION, PARENT.NAME "PARENT",'
+					+' PARENT.PHONE FROM STUDENT, PARENT WHERE STUDENT.P_ID=PARENT.ID'
+					+' AND STUDENT.REG_NO = ?';
+			// query = 'SELECT * FROM STUDENT WHERE REG_NO = ?';
 			values.push(reg_no);
 		}
 		else{
 			var like = "%";
 			if(name)
 				like += name + "%";
-			query = 'SELECT * FROM STUDENT WHERE NAME LIKE ?';
+			query = 'SELECT STUDENT.NAME, STUDENT.REG_NO, STUDENT.CLASS,'
+					+' STUDENT.SECTION, STUDENT.TUITION, PARENT.NAME "PARENT",'
+					+' PARENT.PHONE FROM STUDENT, PARENT WHERE STUDENT.P_ID=PARENT.ID'
+					+' AND STUDENT.NAME LIKE ?';
+			// query = 'SELECT * FROM STUDENT WHERE NAME LIKE ?';
 			values.push(like);
 
 			if(clas){
-				query += ' AND CLASS=(SELECT ID FROM CLASS WHERE TITLE=UPPER(?))';
+				query += ' AND STUDENT.CLASS=(SELECT ID FROM CLASS WHERE TITLE=UPPER(?))';
+				// query += ' AND CLASS=(SELECT ID FROM CLASS WHERE TITLE=UPPER(?))';
 				values.push(clas);
 
 				if(section){
-					query += ' AND SECTION=?';
+					query += ' AND STUDENT.SECTION=?';
+					// query += ' AND SECTION=?';
 					values.push(section);
 				}
 			}
